@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>eFoil Racing Prototype – G-Force & Layout</title>
+  <style>
+	html, body {
+	  margin: 0;
+	  padding: 0;
+	  height: 100%;
+	  width: 100%;
+	  background: #333;
+	  font-family: sans-serif;
+	  color: #fff;
+	  overflow: hidden; /* remove scrollbars */
+	}
+	#gameCanvas {
+	  display: block;
+	  background: #222;
+	}
+	/* Lap Time => 3x bigger (14px -> 42px), top center, drop shadow */
+	#lapTimeDisplay {
+	  position: absolute;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  top: 20px;
+	  font-size: 42px;
+	  font-weight: bold;
+	  color: #fff;
+	  text-shadow: 2px 2px 2px #000;
+	}
+	/* Speed => bottom + 50px, 28px (2x 14px), bold */
+	#speedDisplay {
+	  position: absolute;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  bottom: 50px;
+	  font-size: 28px;
+	  font-weight: bold;
+	  color: #fff;
+	}
+	/* G-Force => bottom + 20px, 28px, bold */
+	#gForceDisplay {
+	  position: absolute;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  bottom: 20px;
+	  font-size: 28px;
+	  font-weight: bold;
+	  color: #fff;
+	}
+  </style>
+</head>
+<body>
+  <!-- Audio elements -->
+  <audio id="windAudio" src="https://ik.imagekit.io/efoilracing/simulator/wind.mp3?updatedAt=1738522206573" loop preload="auto"></audio>
+	<audio id="musicAudio" src="https://ik.imagekit.io/efoilracing/simulator/game_music.mp3?updatedAt=1738522209185" preload="auto"></audio>
+	<audio id="boomStopAudio" src="https://ik.imagekit.io/efoilracing/simulator/boom_stop.mp3?updatedAt=1738522192269" preload="auto"></audio>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- Large lap time at top -->
+  <div id="lapTimeDisplay">0.00</div>
+  <!-- Speed reading above G-Force -->
+  <div id="speedDisplay">Speed: 0.0 km/h</div>
+  <div id="gForceDisplay">G-Force: 0.00</div>
+
+  <script>
+	//====================================================
+	// Responsive Canvas
+	//====================================================
+	const canvas = document.getElementById('gameCanvas');
+	const ctx = canvas.getContext('2d');
+
+	function resizeCanvas() {
+	  canvas.width = window.innerWidth;
+	  canvas.height = window.innerHeight;
+	}
+	window.addEventListener('resize', resizeCanvas);
+	resizeCanvas(); // initial
+
+	//====================================================
+	// Audio Setup
+	//====================================================
+	const windAudio     = document.getElementById('windAudio');
+	const musicAudio    = document.getElementById('musicAudio');
+	const boomStopAudio = document.getElementById('boomStopAudio');
+
+	// Let the music loop while lap is active
+	musicAudio.loop = true;
+
+	let fadeTimeout = null;
+	function fadeOutMusic() {
+	  if (!musicAudio.paused) {
+		let volume = 1.0;
+		const fadeTime   = 5000; // total fade 5s
+		const steps      = 50;
+		const fadeInterval = fadeTime / steps; // e.g. 100 ms
+		const step       = 1 / steps; // 0.02 each step
+
+		function doFade() {
+		  volume = Math.max(0, volume - step);
+		  musicAudio.volume = volume;
+		  if (volume > 0) {
+			setTimeout(doFade, fadeInterval);
+		  } else {
+			musicAudio.pause();
+			musicAudio.currentTime = 0;
+			musicAudio.volume = 1.0;
+		  }
+		}
+		doFade();
+	  }
+	}
+
+	// Start wind audio after first user gesture
+	function enableAudio() {
+	  windAudio.play().catch(err => console.warn("Wind audio play failed", err));
+	  document.removeEventListener('keydown', enableAudio);
+	}
+	document.addEventListener('keydown', enableAudio, { once: true });
+
+	//====================================================
+	// Track Setup
+	//====================================================
+	const scale = 4; // 1 m => 4 px
+	let buoyPixels = [];
+	let buoys      = [];
+
+	const buoyMeters = [
+	  { x: 20,    y: 15 },
+	  { x: 81.43, y: 48.56 },
+	  { x: 125,   y: 15 }
+	];
+
+	const timingLine = { x1:0, y1:0, x2:0, y2:0 };
+
+	function computeBuoys() {
+	  buoyPixels = buoyMeters.map(b => ({
+		x: b.x * scale,
+		y: canvas.height - (b.y * scale)
+	  }));
+
+	  const centroid = {
+		x: (buoyPixels[0].x + buoyPixels[1].x + buoyPixels[2].x) / 3,
+		y: (buoyPixels[0].y + buoyPixels[1].y + buoyPixels[2].y) / 3
+	  };
+	  const trackOffset = {
+		x: canvas.width / 2 - centroid.x,
+		y: canvas.height / 2 - centroid.y
+	  };
+
+	  buoys = buoyPixels.map(b => ({
+		x: b.x + trackOffset.x,
+		y: b.y + trackOffset.y
+	  }));
+
+	  timingLine.x1 = buoys[0].x;
+	  timingLine.y1 = buoys[0].y;
+	  timingLine.x2 = canvas.width / 2;
+	  timingLine.y2 = canvas.height;
+	}
+
+	//====================================================
+	// Speed & Acceleration
+	//====================================================
+	const maxSpeed        = 15; // => 60 km/h
+	const maxKmH          = 55; // top speed in km/h
+	const speedConversion = maxKmH / maxSpeed;
+	let speed             = 0;
+
+	// ~30s to reach top speed
+	const accelPerFrame   = 15 / (30 * 60);
+	const decelPerFrame   = 0.05;
+
+	//====================================================
+	// Bank angle
+	//====================================================
+	const maxBank = 20;
+	let bankAngle = 0;
+	const bankStep = 0.2;
+	const bankDecay= 0.9;
+
+	//====================================================
+	// Movement & turning
+	//====================================================
+	let heading = 0;
+	const pos   = { x: 0, y: 0 };
+	let oldPos  = { x: 0, y: 0 };
+
+	let wakeTrail = [];
+	function totalTrailDistance(trail) {
+	  let d=0;
+	  for(let i=1; i<trail.length; i++){
+		d += Math.hypot(trail[i].x - trail[i-1].x, trail[i].y - trail[i-1].y);
+	  }
+	  return d;
+	}
+
+	const speedScale = 0.093;
+
+	const turnRadii = { 60:80, 40:80, 30:30, 15:15, 10:10 };
+	function getTurnRadius(speedKmh){
+	  const speeds= Object.keys(turnRadii).map(Number).sort((a,b)=>b-a);
+	  for(let i=0; i<speeds.length-1; i++){
+		const s1= speeds[i];
+		const s2= speeds[i+1];
+		if(speedKmh <= s1 && speedKmh >= s2){
+		  const r1= turnRadii[s1], r2= turnRadii[s2];
+		  const t = (speedKmh - s2)/(s1 - s2);
+		  return r2 + (r1 - r2)*t;
+		}
+	  }
+	  return (speedKmh>60)? turnRadii[60] : turnRadii[10];
+	}
+
+	const lowFactor  = 0.02084;
+	const highFactor = 0.13554;
+
+	//====================================================
+	// Lap timing & Telemetry
+	//====================================================
+	let lapActive      = false;
+	let lapStartTime   = 0;
+	let currentLapTime = 0;
+
+	const laps = [];
+
+	let distanceTraveled = 0;
+	let topSpeedKmh      = 0;
+	let minSpeedKmh      = Infinity;
+	let sumSpeeds        = 0;
+	let frameCount       = 0;
+	let lastPosTelemetry = { x:0, y:0 };
+
+	function startLap() {
+	  lapStartTime    = performance.now();
+	  currentLapTime  = 0;
+	  lapActive       = true;
+
+	  distanceTraveled= 0;
+	  topSpeedKmh     = 0;
+	  minSpeedKmh     = Infinity;
+	  sumSpeeds       = 0;
+	  frameCount      = 0;
+
+	  lastPosTelemetry.x = pos.x;
+	  lastPosTelemetry.y = pos.y;
+	}
+
+	function finalizeLap() {
+	  currentLapTime = (performance.now() - lapStartTime)/1000;
+	  lapActive      = false;
+
+	  const avgSpeedKmh = (frameCount>0)? (sumSpeeds / frameCount) : 0;
+	  laps.unshift({
+		topSpeed:   topSpeedKmh,
+		minSpeed:   (minSpeedKmh===Infinity ? 0 : minSpeedKmh),
+		avgSpeed:   avgSpeedKmh,
+		distance:   distanceTraveled,
+		finalTime:  currentLapTime
+	  });
+	  if(laps.length>4) laps.pop();
+	}
+
+	//====================================================
+	// Key input
+	//====================================================
+	const keys = {};
+	document.addEventListener('keydown', e => keys[e.key] = true);
+	document.addEventListener('keyup',   e => keys[e.key] = false);
+
+	//====================================================
+	// Intersection test & Lap crossing
+	//====================================================
+	function orientation(p,q,r){
+	  return (q.y-p.y)*(r.x-q.x) - (q.x-p.x)*(r.y-q.y);
+	}
+	function linesIntersect(ax1,ay1,ax2,ay2, bx1,by1,bx2,by2){
+	  const p1={x:ax1,y:ay1}, p2={x:ax2,y:ay2},
+			p3={x:bx1,y:by1}, p4={x:bx2,y:by2};
+	  const o1=orientation(p1,p2,p3),
+			o2=orientation(p1,p2,p4),
+			o3=orientation(p3,p4,p1),
+			o4=orientation(p3,p4,p2);
+	  if((o1>0&&o2<0)||(o1<0&&o2>0)){
+		if((o3>0&&o4<0)||(o3<0&&o4>0)) return true;
+	  }
+	  return false;
+	}
+
+	function checkLapCrossing(){
+	  if(pos.x===0||pos.x===canvas.width||pos.y===0||pos.y===canvas.height){
+		return;
+	  }
+	  if(linesIntersect(
+		oldPos.x, oldPos.y, pos.x, pos.y,
+		timingLine.x1, timingLine.y1,
+		timingLine.x2, timingLine.y2
+	  )){
+		if(!lapActive){
+		  startLap();
+		  musicAudio.volume=1.0;
+		  musicAudio.currentTime=0;
+		  musicAudio.play().catch(err=>console.warn("Music play failed", err));
+		} else {
+		  finalizeLap();
+		  boomStopAudio.currentTime=0;
+		  boomStopAudio.play().catch(err=>console.warn("Boom stop failed", err));
+		  if(fadeTimeout) clearTimeout(fadeTimeout);
+		  fadeTimeout= setTimeout(()=> fadeOutMusic(), 500);
+		}
+	  }
+	}
+
+	//====================================================
+	// update: handle G-Force & real angle
+	//====================================================
+	function update(){
+	  // store old pos
+	  oldPos.x = pos.x;
+	  oldPos.y = pos.y;
+
+	  // basic speed logic
+	  if(keys['ArrowUp']) {
+		speed += accelPerFrame;
+	  }
+	  if(keys['ArrowDown']) {
+		speed -= decelPerFrame;
+	  }
+	  speed = Math.max(0, Math.min(maxSpeed, speed));
+
+	  // bank angle
+	  if(keys['ArrowLeft'])  bankAngle -= bankStep;
+	  if(keys['ArrowRight']) bankAngle += bankStep;
+	  bankAngle = Math.max(-maxBank, Math.min(maxBank, bankAngle));
+	  if(!keys['ArrowLeft'] && !keys['ArrowRight']){
+		bankAngle *= bankDecay;
+		if(Math.abs(bankAngle) < 0.05) bankAngle=0;
+	  }
+
+	  // Convert –20..+20 => ±50° real
+	  const actualDeg = bankAngle * (50 / maxBank);
+	  const actualRad = actualDeg * (Math.PI / 180);
+
+	  // G-Force: lateral ~ tan(angle)
+	  const gForce = Math.tan(actualRad);
+
+	  // turning
+	  const speedKmh = speed * speedConversion;
+	  const radius   = getTurnRadius(speedKmh);
+	  // If turning is too slow, raise turnGain
+	  const turnGain = 15;
+	  const angularIncrement = (actualRad * turnGain) * ((1 / radius) + lowFactor) / 60;
+	  heading += angularIncrement;
+
+	  // movement
+	  pos.x += speed * speedScale * Math.cos(heading);
+	  pos.y += speed * speedScale * Math.sin(heading);
+
+	  // wrap
+	  let wrapped=false;
+	  if(pos.x>canvas.width) {pos.x=0; wrapped=true;}
+	  else if(pos.x<0)       {pos.x=canvas.width;wrapped=true;}
+	  if(pos.y>canvas.height){pos.y=0; wrapped=true;}
+	  else if(pos.y<0)       {pos.y=canvas.height;wrapped=true;}
+
+	  // wake
+	  wakeTrail.push({ x: pos.x, y: pos.y });
+	  const targetWakeLength = (speed / maxSpeed)*200;
+	  while(wakeTrail.length>1 && totalTrailDistance(wakeTrail) > targetWakeLength){
+		wakeTrail.shift();
+	  }
+
+	  // wind volume => 0..1
+	  windAudio.volume = speed / maxSpeed;
+
+	  // speed in km/h
+	  document.getElementById('speedDisplay').innerText =
+		`Speed: ${speedKmh.toFixed(1)} km/h`;
+
+	  // G-Force reading
+	  document.getElementById('gForceDisplay').innerText =
+		`G-Force: ${gForce.toFixed(2)}`;
+
+	  // crossing if no wrap
+	  if(!wrapped){
+		checkLapCrossing();
+	  }
+
+	  // Telemetry if lap is active
+	  if(lapActive){
+		if(speedKmh > topSpeedKmh) topSpeedKmh = speedKmh;
+		if(speedKmh < minSpeedKmh) minSpeedKmh = speedKmh;
+		sumSpeeds += speedKmh;
+		frameCount++;
+
+		const dx = pos.x - lastPosTelemetry.x;
+		const dy = pos.y - lastPosTelemetry.y;
+		const distPx = Math.hypot(dx, dy);
+		const distM  = distPx / scale;
+		distanceTraveled += distM;
+		lastPosTelemetry.x = pos.x;
+		lastPosTelemetry.y = pos.y;
+	  }
+
+	  // LapTime display => numeric only
+	  if(lapActive){
+		const t= (performance.now()- lapStartTime)/1000;
+		document.getElementById('lapTimeDisplay').innerText= t.toFixed(2);
+	  } else {
+		document.getElementById('lapTimeDisplay').innerText= currentLapTime.toFixed(2);
+	  }
+	}
+
+	function drawTrack(){
+	  buoys.forEach(buoy=>{
+		ctx.beginPath();
+		ctx.arc(buoy.x, buoy.y, 8, 0, Math.PI*2);
+		ctx.fillStyle="#FFFF00";
+		ctx.fill();
+		ctx.lineWidth=2;
+		ctx.strokeStyle="#fff";
+		ctx.stroke();
+	  });
+
+	  ctx.beginPath();
+	  ctx.moveTo(timingLine.x1, timingLine.y1);
+	  ctx.lineTo(timingLine.x2, timingLine.y2);
+	  ctx.strokeStyle="red";
+	  ctx.lineWidth=1;
+	  ctx.stroke();
+	}
+
+	function drawWake(){
+	  if(wakeTrail.length<2) return;
+	  for(let i=1; i<wakeTrail.length; i++){
+		const t= i/wakeTrail.length;
+		const alpha= t;
+		ctx.beginPath();
+		ctx.moveTo(wakeTrail[i-1].x, wakeTrail[i-1].y);
+		ctx.lineTo(wakeTrail[i].x,   wakeTrail[i].y);
+		ctx.strokeStyle=`rgba(255,255,255,${alpha.toFixed(2)})`;
+		ctx.lineWidth=2;
+		ctx.stroke();
+	  }
+	}
+
+	function drawTelemetry(){
+	  ctx.save();
+	  ctx.font = "14px monospace";
+	  ctx.fillStyle = "#fff";
+
+	  let x=20, y=50;
+	  ctx.fillText("Telemetry:", x, y);
+	  y+=20;
+
+	  laps.forEach((lap,index)=>{
+		ctx.fillText(`Lap ${index+1}:`, x, y);
+		y+=18;
+		ctx.fillText(`  Time:   ${lap.finalTime.toFixed(2)} s`, x, y);
+		y+=18;
+		ctx.fillText(`  Dist:   ${lap.distance.toFixed(1)} m`, x, y);
+		y+=18;
+		ctx.fillText(`  TopSpd: ${lap.topSpeed.toFixed(1)} km/h`, x, y);
+		y+=18;
+		ctx.fillText(`  MinSpd: ${lap.minSpeed.toFixed(1)} km/h`, x, y);
+		y+=18;
+		ctx.fillText(`  AvgSpd: ${lap.avgSpeed.toFixed(1)} km/h`, x, y);
+		y+=24;
+	  });
+	  ctx.restore();
+	}
+
+	function drawRacer(){
+	  ctx.save();
+	  ctx.translate(pos.x, pos.y);
+	  ctx.rotate(heading - Math.PI/2);
+	  ctx.beginPath();
+	  // Halve the surfboard dimensions
+	  ctx.moveTo(0,12.5);
+	  ctx.bezierCurveTo(4,7.5,4,-7.5,0,-12.5);
+	  ctx.bezierCurveTo(-4,-7.5,-4,7.5,0,12.5);
+	  ctx.closePath();
+	  ctx.fillStyle="#00ccff";
+	  ctx.fill();
+	  ctx.restore();
+	}
+
+	function gameLoop(){
+	  update();
+	  ctx.clearRect(0, 0, canvas.width, canvas.height);
+	  ctx.fillStyle="#222";
+	  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	  drawTrack();
+	  drawWake();
+	  drawRacer();
+	  drawTelemetry();
+
+	  requestAnimationFrame(gameLoop);
+	}
+
+	function init(){
+	  computeBuoys();
+	  pos.x=canvas.width/2;
+	  pos.y=canvas.height/2;
+	  gameLoop();
+	}
+
+	window.addEventListener('resize', ()=>{
+	  resizeCanvas();
+	  computeBuoys();
+	});
+
+	resizeCanvas();
+	computeBuoys();
+	init();
+  </script>
+</body>
+</html>
