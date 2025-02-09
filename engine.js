@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////
-// engine.js
+// engine.js - The eFoil Racing Simulator is ©Antti Koskinen. All Rights Reserved. Copying, duplicating and / or redistribution without permission is strictly prohibited.
 ////////////////////////////////////////////////////////////
 
 // --- Canvas and Context ---
