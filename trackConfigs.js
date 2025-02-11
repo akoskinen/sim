@@ -2,7 +2,7 @@
 
 const trackConfigs = {
   speedTrack: {
-	name: "Speed Track",
+	name: "Speedtrack",
 	scale: 4, // conversion factor from meters to pixels
 	// Define buoys in meters
 	buoys: [
@@ -21,7 +21,7 @@ const trackConfigs = {
 	}
   },
   dubaiTrack: {
-	name: "Dubai Track",
+	name: "Dubai",
 	scale: 4,
 	// 150m x 75m layout
 	buoys: [
