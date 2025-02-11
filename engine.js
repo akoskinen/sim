@@ -23,13 +23,13 @@ const availableTrackKeys = Object.keys(trackConfigs);
 
 function computeBuoys(){
   buoyPixels = currentTrack.buoys.map(b => ({
-    x: b.x * currentTrack.scale,
-    y: canvas.height - (b.y * currentTrack.scale)
+	x: b.x * currentTrack.scale,
+	y: canvas.height - (b.y * currentTrack.scale)
   }));
   
   const centroid = buoyPixels.reduce((sum, b) => ({
-    x: sum.x + b.x,
-    y: sum.y + b.y
+	x: sum.x + b.x,
+	y: sum.y + b.y
   }), { x: 0, y: 0 });
   centroid.x /= buoyPixels.length;
   centroid.y /= buoyPixels.length;
@@ -38,8 +38,8 @@ function computeBuoys(){
   trackOffset.y = canvas.height / 2 - centroid.y;
   
   buoys = buoyPixels.map(b => ({
-    x: b.x + trackOffset.x,
-    y: b.y + trackOffset.y
+	x: b.x + trackOffset.x,
+	y: b.y + trackOffset.y
   }));
   
   timingLine = currentTrack.computeTimingLine(buoys, canvas);
@@ -55,23 +55,23 @@ musicAudio.loop = true;
 
 function fadeOutMusic(){
   if (!musicAudio.paused) {
-    let volume = 1.0;
-    const fadeTime = 5000;
-    const steps = 50;
-    const fadeInterval = fadeTime / steps;
-    const step = 1 / steps;
-    function doFade(){
-      volume = Math.max(0, volume - step);
-      musicAudio.volume = volume;
-      if (volume > 0) {
-        setTimeout(doFade, fadeInterval);
-      } else {
-        musicAudio.pause();
-        musicAudio.currentTime = 0;
-        musicAudio.volume = 1.0;
-      }
-    }
-    doFade();
+	let volume = 1.0;
+	const fadeTime = 5000;
+	const steps = 50;
+	const fadeInterval = fadeTime / steps;
+	const step = 1 / steps;
+	function doFade(){
+	  volume = Math.max(0, volume - step);
+	  musicAudio.volume = volume;
+	  if (volume > 0) {
+		setTimeout(doFade, fadeInterval);
+	  } else {
+		musicAudio.pause();
+		musicAudio.currentTime = 0;
+		musicAudio.volume = 1.0;
+	  }
+	}
+	doFade();
   }
 }
 
@@ -93,13 +93,13 @@ window.addEventListener('resize', resizeCanvas);
 const trackRadios = document.querySelectorAll('input[name="track"]');
 trackRadios.forEach(radio => {
   radio.addEventListener('change', function(){
-    if (this.checked) {
-      currentTrackKey = this.value;           
-      currentTrack    = trackConfigs[currentTrackKey];
-      computeBuoys();
-      // If we switch tracks, we might clear or reload the ideal line
-      idealLineData = null;
-    }
+	if (this.checked) {
+	  currentTrackKey = this.value;           
+	  currentTrack    = trackConfigs[currentTrackKey];
+	  computeBuoys();
+	  // If we switch tracks, we might clear or reload the ideal line
+	  idealLineData = null;
+	}
   });
 });
 
@@ -123,26 +123,26 @@ function updateBankAngle(dt){
   if (keys['ArrowRight']) targetSign =  1;
   
   if (targetSign !== 0) {
-    let currentMag = Math.abs(bankAngleDeg);
-    let sign = Math.sign(bankAngleDeg);
-    if (sign === 0) sign = targetSign;
-    if (sign !== targetSign) {
-      currentMag = 0;
-      bankAngleDeg = 0;
-      sign = targetSign;
-    }
-    let rate = (currentMag < 30) ? bankRate0to30 : bankRate30to55;
-    currentMag += rate * dt;
-    if (currentMag > BANK_ANGLE_MAX) currentMag = BANK_ANGLE_MAX;
-    bankAngleDeg = sign * currentMag;
+	let currentMag = Math.abs(bankAngleDeg);
+	let sign = Math.sign(bankAngleDeg);
+	if (sign === 0) sign = targetSign;
+	if (sign !== targetSign) {
+	  currentMag = 0;
+	  bankAngleDeg = 0;
+	  sign = targetSign;
+	}
+	let rate = (currentMag < 30) ? bankRate0to30 : bankRate30to55;
+	currentMag += rate * dt;
+	if (currentMag > BANK_ANGLE_MAX) currentMag = BANK_ANGLE_MAX;
+	bankAngleDeg = sign * currentMag;
   } else {
-    if (Math.abs(bankAngleDeg) < 0.5) {
-      bankAngleDeg = 0;
-    } else {
-      const decayPow = Math.pow(bankDecay, 60 * dt);
-      bankAngleDeg *= decayPow;
-      if (Math.abs(bankAngleDeg) < 0.05) bankAngleDeg = 0;
-    }
+	if (Math.abs(bankAngleDeg) < 0.5) {
+	  bankAngleDeg = 0;
+	} else {
+	  const decayPow = Math.pow(bankDecay, 60 * dt);
+	  bankAngleDeg *= decayPow;
+	  if (Math.abs(bankAngleDeg) < 0.05) bankAngleDeg = 0;
+	}
   }
 }
 
@@ -165,18 +165,18 @@ const reduceData = [
 function interpPiecewise(table, spd){
   let s = Math.max(10, Math.min(60, spd));
   for (let i = 1; i < table.length; i++){
-    const prev = table[i-1];
-    const cur  = table[i];
-    if (s >= prev.speed && s <= cur.speed) {
-      const span   = cur.speed - prev.speed;
-      const ratio  = (s - prev.speed) / span;
-      const valPrev= (prev.radius !== undefined) ? prev.radius : prev.factor;
-      const valCur = (cur.radius  !== undefined) ? cur.radius  : cur.factor;
-      return valPrev + (valCur - valPrev) * ratio;
-    }
+	const prev = table[i-1];
+	const cur  = table[i];
+	if (s >= prev.speed && s <= cur.speed) {
+	  const span   = cur.speed - prev.speed;
+	  const ratio  = (s - prev.speed) / span;
+	  const valPrev= (prev.radius !== undefined) ? prev.radius : prev.factor;
+	  const valCur = (cur.radius  !== undefined) ? cur.radius  : cur.factor;
+	  return valPrev + (valCur - valPrev) * ratio;
+	}
   }
   if (s <= table[0].speed) {
-    return (table[0].radius !== undefined) ? table[0].radius : table[0].factor;
+	return (table[0].radius !== undefined) ? table[0].radius : table[0].factor;
   }
   const last = table[table.length - 1];
   return (last.radius !== undefined) ? last.radius : last.factor;
@@ -189,14 +189,14 @@ function getTurnRadius(speedKmh, angleDeg){
   const radiusAt50= base30 * factorMax;
   
   if (ang < 30) {
-    const frac = ang / 30;
-    const bigVal = 5000;
-    return bigVal + frac * (base30 - bigVal);
+	const frac = ang / 30;
+	const bigVal = 5000;
+	return bigVal + frac * (base30 - bigVal);
   } else if (ang <= 50) {
-    const frac = (ang - 30) / 20;
-    return base30 + frac * (radiusAt50 - base30);
+	const frac = (ang - 30) / 20;
+	return base30 + frac * (radiusAt50 - base30);
   } else {
-    return radiusAt50;
+	return radiusAt50;
   }
 }
 
@@ -242,8 +242,8 @@ function trackMetersToPixel(mx, my) {
   const localX = mx * currentTrack.scale;
   const localY = canvas.height - (my * currentTrack.scale);
   return {
-    x: localX + trackOffset.x,
-    y: localY + trackOffset.y
+	x: localX + trackOffset.x,
+	y: localY + trackOffset.y
   };
 }
 
@@ -251,10 +251,10 @@ function recordGhostData(timeSec){
   if (!lapActive) return;
   const trackM = pixelToTrackMeters(pos.x, pos.y);
   recordedGhost.push({
-    time: timeSec,
-    x: trackM.x,
-    y: trackM.y,
-    heading
+	time: timeSec,
+	x: trackM.x,
+	y: trackM.y,
+	heading
   });
 }
 
@@ -263,15 +263,15 @@ function getGhostPosition(t){
   const frames = ghostData.frames;
   
   for (let i = 1; i < frames.length; i++){
-    const prev = frames[i-1];
-    const cur  = frames[i];
-    if (prev.time <= t && cur.time >= t) {
-      const ratio = (t - prev.time) / (cur.time - prev.time);
-      const x = prev.x + ratio * (cur.x - prev.x);
-      const y = prev.y + ratio * (cur.y - prev.y);
-      const h = prev.heading + ratio * (cur.heading - prev.heading);
-      return { x, y, heading: h };
-    }
+	const prev = frames[i-1];
+	const cur  = frames[i];
+	if (prev.time <= t && cur.time >= t) {
+	  const ratio = (t - prev.time) / (cur.time - prev.time);
+	  const x = prev.x + ratio * (cur.x - prev.x);
+	  const y = prev.y + ratio * (cur.y - prev.y);
+	  const h = prev.heading + ratio * (cur.heading - prev.heading);
+	  return { x, y, heading: h };
+	}
   }
   const last = frames[frames.length - 1];
   if (t > last.time) return last;
@@ -327,17 +327,17 @@ function finalizeLap(){
   
   const avgSpeedKmh = (frameCount > 0) ? (sumSpeeds / frameCount) : 0;
   laps.unshift({
-    topSpeed: topSpeedKmh,
-    minSpeed: (minSpeedKmh === Infinity ? 0 : minSpeedKmh),
-    avgSpeed: avgSpeedKmh,
-    distance: distanceTraveled,
-    finalTime: currentLapTime
+	topSpeed: topSpeedKmh,
+	minSpeed: (minSpeedKmh === Infinity ? 0 : minSpeedKmh),
+	avgSpeed: avgSpeedKmh,
+	distance: distanceTraveled,
+	finalTime: currentLapTime
   });
   if (laps.length > 4) laps.pop();
   
   ghostData = {
-    trackKey: currentTrackKey,
-    frames: recordedGhost.slice()
+	trackKey: currentTrackKey,
+	frames: recordedGhost.slice()
   };
 }
 
@@ -350,16 +350,16 @@ document.addEventListener('keydown', e => {
 
   // Toggle 'P' to show/hide the ideal line
   if (e.key === 'p' || e.key === 'P') {
-    showIdealLine = !showIdealLine;
-    // If we haven't loaded the line yet, load it now
-    if (showIdealLine && !idealLineData) {
-      loadIdealLineForCurrentTrack();
-    }
+	showIdealLine = !showIdealLine;
+	// If we haven't loaded the line yet, load it now
+	if (showIdealLine && !idealLineData) {
+	  loadIdealLineForCurrentTrack();
+	}
   }
 
   // Press 'T' to cycle to the next track
   if (e.key === 't' || e.key === 'T') {
-    cycleToNextTrack();
+	cycleToNextTrack();
   }
 });
 
@@ -396,29 +396,29 @@ function linesIntersect(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2){
   const o3 = orientation(p3, p4, p1);
   const o4 = orientation(p3, p4, p2);
   if ((o1 > 0 && o2 < 0) || (o1 < 0 && o2 > 0)) {
-    if ((o3 > 0 && o4 < 0) || (o3 < 0 && o4 > 0)) return true;
+	if ((o3 > 0 && o4 < 0) || (o3 < 0 && o4 > 0)) return true;
   }
   return false;
 }
 
 function checkLapCrossing(){
   if (pos.x === 0 || pos.x === canvas.width || pos.y === 0 || pos.y === canvas.height) {
-    return;
+	return;
   }
   if (linesIntersect(oldPos.x, oldPos.y, pos.x, pos.y,
-                     timingLine.x1, timingLine.y1,
-                     timingLine.x2, timingLine.y2)) {
-    if (!lapActive) {
-      startLap();
-      musicAudio.volume = 1.0;
-      musicAudio.currentTime = 0;
-      musicAudio.play().catch(err => console.warn("Music play fail", err));
-    } else {
-      finalizeLap();
-      boomStopAudio.currentTime = 0;
-      boomStopAudio.play().catch(err => console.warn("Boom stop fail", err));
-      fadeOutMusic();
-    }
+					 timingLine.x1, timingLine.y1,
+					 timingLine.x2, timingLine.y2)) {
+	if (!lapActive) {
+	  startLap();
+	  musicAudio.volume = 1.0;
+	  musicAudio.currentTime = 0;
+	  musicAudio.play().catch(err => console.warn("Music play fail", err));
+	} else {
+	  finalizeLap();
+	  boomStopAudio.currentTime = 0;
+	  boomStopAudio.play().catch(err => console.warn("Boom stop fail", err));
+	  fadeOutMusic();
+	}
   }
 }
 
@@ -427,16 +427,16 @@ function checkBuoyCollisions(){
   if (!lapActive || collidedThisLap) return;
   
   for (const b of buoys) {
-    const dx = b.x - pos.x;
-    const dy = b.y - pos.y;
-    const dist = Math.hypot(dx, dy);
-    if (dist < 12) {
-      penaltySeconds += 10;
-      collidedThisLap = true;
-      collisionAudio.currentTime = 0;
-      collisionAudio.play().catch(err => console.warn("Collision audio fail", err));
-      break;
-    }
+	const dx = b.x - pos.x;
+	const dy = b.y - pos.y;
+	const dist = Math.hypot(dx, dy);
+	if (dist < 12) {
+	  penaltySeconds += 10;
+	  collidedThisLap = true;
+	  collisionAudio.currentTime = 0;
+	  collisionAudio.play().catch(err => console.warn("Collision audio fail", err));
+	  break;
+	}
   }
 }
 
@@ -446,10 +446,10 @@ function update(dt){
   oldPos.y = pos.y;
   
   if (keys['ArrowUp']) {
-    speed += accelRate * dt;
+	speed += accelRate * dt;
   }
   if (keys['ArrowDown']) {
-    speed -= decelRate * dt;
+	speed -= decelRate * dt;
   }
   speed = Math.max(0, Math.min(maxSpeed, speed));
   
@@ -476,40 +476,40 @@ function update(dt){
   document.getElementById('bankAngleDisplay').innerText = `Bank: ${bankAngleDeg.toFixed(0)}°`;
   
   if (!wrapped) {
-    checkLapCrossing();
+	checkLapCrossing();
   }
   
   if (lapActive) {
-    if (speedKmh > topSpeedKmh) topSpeedKmh = speedKmh;
-    if (speedKmh < minSpeedKmh) minSpeedKmh = speedKmh;
-    sumSpeeds += speedKmh;
-    frameCount++;
-    
-    const dx = pos.x - lastPosTelemetry.x;
-    const dy = pos.y - lastPosTelemetry.y;
-    const distPx = Math.hypot(dx, dy);
-    const distM  = distPx / currentTrack.scale;
-    distanceTraveled += distM;
-    lastPosTelemetry.x = pos.x;
-    lastPosTelemetry.y = pos.y;
-    
-    checkBuoyCollisions();
-    
-    const rawSec = (performance.now() - lapStartTime) / 1000;
-    recordGhostData(rawSec);
-    
-    const totalSec = rawSec + penaltySeconds;
-    if (penaltySeconds > 0 && collidedThisLap) {
-      document.getElementById('lapTimeDisplay').innerText = `Laptime: ${totalSec.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
-    } else {
-      document.getElementById('lapTimeDisplay').innerText = `Laptime: ${totalSec.toFixed(2)}`;
-    }
+	if (speedKmh > topSpeedKmh) topSpeedKmh = speedKmh;
+	if (speedKmh < minSpeedKmh) minSpeedKmh = speedKmh;
+	sumSpeeds += speedKmh;
+	frameCount++;
+	
+	const dx = pos.x - lastPosTelemetry.x;
+	const dy = pos.y - lastPosTelemetry.y;
+	const distPx = Math.hypot(dx, dy);
+	const distM  = distPx / currentTrack.scale;
+	distanceTraveled += distM;
+	lastPosTelemetry.x = pos.x;
+	lastPosTelemetry.y = pos.y;
+	
+	checkBuoyCollisions();
+	
+	const rawSec = (performance.now() - lapStartTime) / 1000;
+	recordGhostData(rawSec);
+	
+	const totalSec = rawSec + penaltySeconds;
+	if (penaltySeconds > 0 && collidedThisLap) {
+	  document.getElementById('lapTimeDisplay').innerText = `Laptime: ${totalSec.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
+	} else {
+	  document.getElementById('lapTimeDisplay').innerText = `Laptime: ${totalSec.toFixed(2)}`;
+	}
   } else {
-    if (penaltySeconds > 0) {
-      document.getElementById('lapTimeDisplay').innerText = `Laptime: ${currentLapTime.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
-    } else {
-      document.getElementById('lapTimeDisplay').innerText = `Laptime: ${currentLapTime.toFixed(2)}`;
-    }
+	if (penaltySeconds > 0) {
+	  document.getElementById('lapTimeDisplay').innerText = `Laptime: ${currentLapTime.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
+	} else {
+	  document.getElementById('lapTimeDisplay').innerText = `Laptime: ${currentLapTime.toFixed(2)}`;
+	}
   }
 }
 
@@ -518,7 +518,7 @@ let wakeTrail = [];
 function totalTrailDistance(trail){
   let d = 0;
   for (let i = 1; i < trail.length; i++){
-    d += Math.hypot(trail[i].x - trail[i-1].x, trail[i].y - trail[i-1].y);
+	d += Math.hypot(trail[i].x - trail[i-1].x, trail[i].y - trail[i-1].y);
   }
   return d;
 }
@@ -526,26 +526,26 @@ function totalTrailDistance(trail){
 function drawWake(){
   if (wakeTrail.length < 2) return;
   for (let i = 1; i < wakeTrail.length; i++){
-    const t = i / wakeTrail.length;
-    const alpha = t;
-    ctx.beginPath();
-    ctx.moveTo(wakeTrail[i-1].x, wakeTrail[i-1].y);
-    ctx.lineTo(wakeTrail[i].x, wakeTrail[i].y);
-    ctx.strokeStyle = `rgba(255,255,255,${alpha.toFixed(2)})`;
-    ctx.lineWidth = 2;
-    ctx.stroke();
+	const t = i / wakeTrail.length;
+	const alpha = t;
+	ctx.beginPath();
+	ctx.moveTo(wakeTrail[i-1].x, wakeTrail[i-1].y);
+	ctx.lineTo(wakeTrail[i].x, wakeTrail[i].y);
+	ctx.strokeStyle = `rgba(255,255,255,${alpha.toFixed(2)})`;
+	ctx.lineWidth = 2;
+	ctx.stroke();
   }
 }
 
 function drawTrack(){
   buoys.forEach(b => {
-    ctx.beginPath();
-    ctx.arc(b.x, b.y, 8, 0, 2 * Math.PI);
-    ctx.fillStyle = '#FFFF00';
-    ctx.fill();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = '#fff';
-    ctx.stroke();
+	ctx.beginPath();
+	ctx.arc(b.x, b.y, 8, 0, 2 * Math.PI);
+	ctx.fillStyle = '#FFFF00';
+	ctx.fill();
+	ctx.lineWidth = 2;
+	ctx.strokeStyle = '#fff';
+	ctx.stroke();
   });
   ctx.beginPath();
   ctx.moveTo(timingLine.x1, timingLine.y1);
@@ -563,12 +563,12 @@ function drawTelemetry(){
   ctx.fillText('Telemetry:', x, y);
   y += 20;
   laps.forEach((lap, idx) => {
-    ctx.fillText(`Lap ${idx+1}:`, x, y); y += 18;
-    ctx.fillText(`  Time:   ${lap.finalTime.toFixed(2)} s`, x, y); y += 18;
-    ctx.fillText(`  Dist:   ${lap.distance.toFixed(1)} m`, x, y); y += 18;
-    ctx.fillText(`  TopSpd: ${lap.topSpeed.toFixed(1)} km/h`, x, y); y += 18;
-    ctx.fillText(`  MinSpd: ${lap.minSpeed.toFixed(1)} km/h`, x, y); y += 18;
-    ctx.fillText(`  AvgSpd: ${lap.avgSpeed.toFixed(1)} km/h`, x, y); y += 24;
+	ctx.fillText(`Lap ${idx+1}:`, x, y); y += 18;
+	ctx.fillText(`  Time:   ${lap.finalTime.toFixed(2)} s`, x, y); y += 18;
+	ctx.fillText(`  Dist:   ${lap.distance.toFixed(1)} m`, x, y); y += 18;
+	ctx.fillText(`  TopSpd: ${lap.topSpeed.toFixed(1)} km/h`, x, y); y += 18;
+	ctx.fillText(`  MinSpd: ${lap.minSpeed.toFixed(1)} km/h`, x, y); y += 18;
+	ctx.fillText(`  AvgSpd: ${lap.avgSpeed.toFixed(1)} km/h`, x, y); y += 24;
   });
   ctx.restore();
 }
@@ -589,10 +589,10 @@ function drawRacer(){
 
 function drawGhostFrame(){
   if (lapActive) {
-    const rawSec = (performance.now() - lapStartTime) / 1000;
-    drawGhost(rawSec);
+	const rawSec = (performance.now() - lapStartTime) / 1000;
+	drawGhost(rawSec);
   } else {
-    drawGhost(currentLapTime);
+	drawGhost(currentLapTime);
   }
 }
 
@@ -604,16 +604,16 @@ async function loadIdealLineForCurrentTrack() {
   // example: track name "Dubai Track" => "Dubai%20Track_ideal.json"
   const safeName = encodeURIComponent(currentTrack.name) + '_ideal.json';
   try {
-    const response = await fetch(safeName);
-    if (!response.ok) {
-      console.warn(`Failed to load ideal line file: ${safeName}`);
-      return;
-    }
-    const data = await response.json();
-    idealLineData = data;
-    console.log('Ideal line loaded:', data);
+	const response = await fetch(safeName);
+	if (!response.ok) {
+	  console.warn(`Failed to load ideal line file: ${safeName}`);
+	  return;
+	}
+	const data = await response.json();
+	idealLineData = data;
+	console.log('Ideal line loaded:', data);
   } catch (err) {
-    console.error('Error loading ideal line:', err);
+	console.error('Error loading ideal line:', err);
   }
 }
 
@@ -623,7 +623,7 @@ function drawIdealLine() {
 
   // If the ideal line is for a different track, we could skip or warn:
   if (idealLineData.trackKey && idealLineData.trackKey !== currentTrackKey) {
-    return;
+	return;
   }
 
   ctx.save();
@@ -633,15 +633,15 @@ function drawIdealLine() {
 
   let started = false;
   for (let i = 0; i < idealLineData.frames.length; i++) {
-    const frame = idealLineData.frames[i];
-    const { x: px, y: py } = trackMetersToPixel(frame.x, frame.y);
-    
-    if (!started) {
-      ctx.moveTo(px, py);
-      started = true;
-    } else {
-      ctx.lineTo(px, py);
-    }
+	const frame = idealLineData.frames[i];
+	const { x: px, y: py } = trackMetersToPixel(frame.x, frame.y);
+	
+	if (!started) {
+	  ctx.moveTo(px, py);
+	  started = true;
+	} else {
+	  ctx.lineTo(px, py);
+	}
   }
   ctx.stroke();
   ctx.restore();
@@ -658,7 +658,7 @@ function gameLoop(timestamp){
   wakeTrail.push({ x: pos.x, y: pos.y });
   const targetWakeLength = (speed / maxSpeed) * 200;
   while (wakeTrail.length > 1 && totalTrailDistance(wakeTrail) > targetWakeLength) {
-    wakeTrail.shift();
+	wakeTrail.shift();
   }
   
   update(dt);
@@ -687,8 +687,8 @@ const clearGhostBtn   = document.getElementById('clearGhostBtn');
 
 exportGhostBtn.addEventListener('click', () => {
   if (!ghostData || !ghostData.frames || ghostData.frames.length === 0) {
-    alert('No ghost data to export yet. Complete at least one lap.');
-    return;
+	alert('No ghost data to export yet. Complete at least one lap.');
+	return;
   }
   const jsonData = JSON.stringify(ghostData);
   const blob = new Blob([jsonData], { type: 'application/json' });
@@ -706,25 +706,25 @@ importGhostFile.addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
   try {
-    const text = await file.text();
-    const imported = JSON.parse(text);
+	const text = await file.text();
+	const imported = JSON.parse(text);
 
-    if (!imported.frames || !Array.isArray(imported.frames)) {
-      alert('Invalid ghost data file.');
-      return;
-    }
-    if (imported.trackKey && trackConfigs[imported.trackKey]) {
-      currentTrackKey = imported.trackKey;
-      currentTrack    = trackConfigs[currentTrackKey];
-      computeBuoys();
-    } else if (imported.trackKey) {
-      alert(`Warning: The ghost uses trackKey "${imported.trackKey}" which doesn't exist here!`);
-    }
+	if (!imported.frames || !Array.isArray(imported.frames)) {
+	  alert('Invalid ghost data file.');
+	  return;
+	}
+	if (imported.trackKey && trackConfigs[imported.trackKey]) {
+	  currentTrackKey = imported.trackKey;
+	  currentTrack    = trackConfigs[currentTrackKey];
+	  computeBuoys();
+	} else if (imported.trackKey) {
+	  alert(`Warning: The ghost uses trackKey "${imported.trackKey}" which doesn't exist here!`);
+	}
 
-    ghostData = imported;
-    alert('Ghost data imported successfully! It will appear on your next lap.');
+	ghostData = imported;
+	alert('Ghost data imported successfully! It will appear on your next lap.');
   } catch (err) {
-    alert('Failed to read file: ' + err);
+	alert('Failed to read file: ' + err);
   }
 });
 
