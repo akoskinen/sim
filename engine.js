@@ -1,1 +1,654 @@
-const _0x5c7ee3=_0x4a7b;(function(_0x1c5635,_0x5c59d8){const _0x5b166b=_0x4a7b,_0xcc06f=_0x1c5635();while(!![]){try{const _0xbaeab3=parseInt(_0x5b166b(0xee))/0x1+parseInt(_0x5b166b(0x110))/0x2+parseInt(_0x5b166b(0xb2))/0x3*(parseInt(_0x5b166b(0x10d))/0x4)+-parseInt(_0x5b166b(0xb8))/0x5+-parseInt(_0x5b166b(0xb5))/0x6+parseInt(_0x5b166b(0xc7))/0x7+parseInt(_0x5b166b(0x113))/0x8*(-parseInt(_0x5b166b(0xc1))/0x9);if(_0xbaeab3===_0x5c59d8)break;else _0xcc06f['push'](_0xcc06f['shift']());}catch(_0x5177f7){_0xcc06f['push'](_0xcc06f['shift']());}}}(_0x36f8,0xaa5c7));const canvas=document['getElementById'](_0x5c7ee3(0x10b)),ctx=canvas[_0x5c7ee3(0xce)]('2d');let currentTrack=trackConfigs[_0x5c7ee3(0xab)],buoyPixels=[],buoys=[],timingLine={'x1':0x0,'y1':0x0,'x2':0x0,'y2':0x0},trackOffset={'x':0x0,'y':0x0};function computeBuoys(){const _0x467a49=_0x5c7ee3;buoyPixels=currentTrack[_0x467a49(0xa2)][_0x467a49(0xbc)](_0x1f7d42=>({'x':_0x1f7d42['x']*currentTrack[_0x467a49(0xc6)],'y':canvas[_0x467a49(0xd2)]-_0x1f7d42['y']*currentTrack[_0x467a49(0xc6)]}));const _0x4c051f=buoyPixels['reduce']((_0x3ce914,_0x5b93d8)=>({'x':_0x3ce914['x']+_0x5b93d8['x'],'y':_0x3ce914['y']+_0x5b93d8['y']}),{'x':0x0,'y':0x0});_0x4c051f['x']/=buoyPixels[_0x467a49(0xed)],_0x4c051f['y']/=buoyPixels['length'],trackOffset['x']=canvas[_0x467a49(0x117)]/0x2-_0x4c051f['x'],trackOffset['y']=canvas['height']/0x2-_0x4c051f['y'],buoys=buoyPixels[_0x467a49(0xbc)](_0x58cf12=>({'x':_0x58cf12['x']+trackOffset['x'],'y':_0x58cf12['y']+trackOffset['y']})),timingLine=currentTrack[_0x467a49(0xdf)](buoys,canvas);}const windAudio=document[_0x5c7ee3(0xf0)](_0x5c7ee3(0xbf)),musicAudio=document[_0x5c7ee3(0xf0)](_0x5c7ee3(0xca)),boomStopAudio=document['getElementById'](_0x5c7ee3(0xbe)),collisionAudio=document[_0x5c7ee3(0xf0)]('collisionAudio');function fadeOutMusic(){const _0x4357cb=_0x5c7ee3;if(!musicAudio[_0x4357cb(0xa6)]){let _0x391bfd=0x1;const _0x318813=0x32,_0x5eadc1=0x1388/_0x318813,_0x43e8bf=0x1/_0x318813;!function _0x11ac6f(){const _0x85a043=_0x4357cb;_0x391bfd=Math[_0x85a043(0xd3)](0x0,_0x391bfd-_0x43e8bf),musicAudio[_0x85a043(0xec)]=_0x391bfd,_0x391bfd>0x0?setTimeout(_0x11ac6f,_0x5eadc1):(musicAudio[_0x85a043(0x116)](),musicAudio['currentTime']=0x0,musicAudio[_0x85a043(0xec)]=0x1);}();}}function enableAudio(){const _0x285bd3=_0x5c7ee3;windAudio[_0x285bd3(0xe5)]()[_0x285bd3(0xf1)](_0x29926a=>console[_0x285bd3(0x106)](_0x285bd3(0xa4),_0x29926a)),document[_0x285bd3(0xfd)]('keydown',enableAudio);}function resizeCanvas(){const _0x2f5d55=_0x5c7ee3;canvas[_0x2f5d55(0x117)]=window[_0x2f5d55(0xf7)],canvas['height']=window[_0x2f5d55(0xad)],computeBuoys();}musicAudio['loop']=!0x0,document[_0x5c7ee3(0xb3)](_0x5c7ee3(0x10a),enableAudio,{'once':!0x0}),window[_0x5c7ee3(0xb3)]('resize',resizeCanvas);const trackRadios=document[_0x5c7ee3(0xaa)](_0x5c7ee3(0xcf));function _0x36f8(){const _0xd1e0f2=['appendChild','\x20\x20Dist:\x20\x20\x20','getContext','input[name=\x22track\x22]','currentTime','Failed\x20to\x20read\x20file:\x20','height','max','click','fill','Boom\x20stop\x20fail','min','topSpeed','Invalid\x20ghost\x20data\x20file.','\x20\x20Time:\x20\x20\x20','moveTo','Telemetry:','save','text','computeTimingLine','time','beginPath','createObjectURL','key','download','play','clearGhostBtn','translate','distance','#fff','createElement','fillStyle','volume','length','1325052HwagWS','#ff88ff','getElementById','catch','restore','lapTimeDisplay','lineWidth','abs','14px\x20monospace','innerWidth','Lap\x20','speedDisplay','target','checked','ArrowLeft','removeEventListener','sin','application/json','innerText','ArrowRight','unshift','bankAngleDisplay','s\x20penalty!)','shift','warn','body','now','isArray','keydown','gameCanvas','#FFFF00','6236ouvDaK','\x20\x20MinSpd:\x20','fillRect','1754414WGfUEa','font','pow','8IEoEuO','forEach','speed','pause','width','hypot','factor','rotate','toFixed','Collision\x20audio\x20fail','globalAlpha','\x20km/h','Laptime:\x20','change','\x20\x20AvgSpd:\x20','Speed:\x20','buoys','ArrowUp','Wind\x20audio\x20failed','strokeStyle','paused','\x20(-\x20','stroke','clearRect','querySelectorAll','speedTrack','minSpeed','innerHeight','slice','rgba(255,255,255,','exportGhostBtn','Bank:\x20','699kxjNzw','addEventListener','parse','2558310bYwnHH','push','arc','6898630vRiDCn','#00ccff','Music\x20play\x20fail','radius','map','lineTo','boomStopAudio','windAudio','heading','12738051xLbSnT','value','sign','fillText','bezierCurveTo','scale','9476201ZmZlGD','No\x20ghost\x20data\x20to\x20export\x20yet.\x20Complete\x20at\x20least\x20one\x20lap.','importGhostFile','musicAudio','cos'];_0x36f8=function(){return _0xd1e0f2;};return _0x36f8();}trackRadios['forEach'](_0x48d32a=>{const _0x1cc1ec=_0x5c7ee3;_0x48d32a['addEventListener'](_0x1cc1ec(0x9f),function(){const _0xbcfc20=_0x1cc1ec;this[_0xbcfc20(0xfb)]&&(currentTrack=trackConfigs[this[_0xbcfc20(0xc2)]],computeBuoys());});});const maxSpeed=0x64,timeToMaxSpeed=0x12,accelRate=maxSpeed/0x12,decelRate=12.333,speedConversion=0.6,speedScale=0.837,BANK_ANGLE_MAX=0x37,bankRate0to30=0x28,bankRate30to55=0xa;let bankAngleDeg=0x0;const bankDecay=0.9;function updateBankAngle(_0x4836fa){const _0xec76b7=_0x5c7ee3;let _0x2fdeef=0x0;if(keys[_0xec76b7(0xfc)]&&(_0x2fdeef=-0x1),keys[_0xec76b7(0x101)]&&(_0x2fdeef=0x1),0x0!==_0x2fdeef){let _0x183fd5=Math[_0xec76b7(0xf5)](bankAngleDeg),_0x430e87=Math['sign'](bankAngleDeg);0x0===_0x430e87&&(_0x430e87=_0x2fdeef),_0x430e87!==_0x2fdeef&&(_0x183fd5=0x0,bankAngleDeg=0x0,_0x430e87=_0x2fdeef),_0x183fd5+=(_0x183fd5<0x1e?bankRate0to30:bankRate30to55)*_0x4836fa,_0x183fd5>BANK_ANGLE_MAX&&(_0x183fd5=BANK_ANGLE_MAX),bankAngleDeg=_0x430e87*_0x183fd5;}else{if(Math['abs'](bankAngleDeg)<0.5)bankAngleDeg=0x0;else{const _0x52c3e3=Math[_0xec76b7(0x112)](bankDecay,0x3c*_0x4836fa);bankAngleDeg*=_0x52c3e3,Math[_0xec76b7(0xf5)](bankAngleDeg)<0.05&&(bankAngleDeg=0x0);}}}const baseline30Data=[{'speed':0xa,'radius':0xa},{'speed':0xf,'radius':0xf},{'speed':0x1e,'radius':0x1e},{'speed':0x28,'radius':0x41},{'speed':0x3c,'radius':0x50}],reduceData=[{'speed':0xa,'factor':0.85},{'speed':0xf,'factor':0.82},{'speed':0x1e,'factor':0.83},{'speed':0x28,'factor':0.85},{'speed':0x3c,'factor':0.9}];function interpPiecewise(_0x30ed78,_0x87d308){const _0x28fc9f=_0x5c7ee3;let _0x3c976c=Math[_0x28fc9f(0xd3)](0xa,Math[_0x28fc9f(0xd7)](0x3c,_0x87d308));for(let _0x23d050=0x1;_0x23d050<_0x30ed78['length'];_0x23d050++){const _0xb794ff=_0x30ed78[_0x23d050-0x1],_0x23418d=_0x30ed78[_0x23d050];if(_0x3c976c>=_0xb794ff['speed']&&_0x3c976c<=_0x23418d['speed']){const _0x26a046=_0x23418d[_0x28fc9f(0x115)]-_0xb794ff[_0x28fc9f(0x115)],_0x149f72=(_0x3c976c-_0xb794ff[_0x28fc9f(0x115)])/_0x26a046,_0x318b5b=void 0x0!==_0xb794ff['radius']?_0xb794ff[_0x28fc9f(0xbb)]:_0xb794ff[_0x28fc9f(0x119)];return _0x318b5b+((void 0x0!==_0x23418d[_0x28fc9f(0xbb)]?_0x23418d['radius']:_0x23418d[_0x28fc9f(0x119)])-_0x318b5b)*_0x149f72;}}if(_0x3c976c<=_0x30ed78[0x0][_0x28fc9f(0x115)])return void 0x0!==_0x30ed78[0x0][_0x28fc9f(0xbb)]?_0x30ed78[0x0][_0x28fc9f(0xbb)]:_0x30ed78[0x0][_0x28fc9f(0x119)];const _0x53b560=_0x30ed78[_0x30ed78[_0x28fc9f(0xed)]-0x1];return void 0x0!==_0x53b560[_0x28fc9f(0xbb)]?_0x53b560[_0x28fc9f(0xbb)]:_0x53b560[_0x28fc9f(0x119)];}function getTurnRadius(_0x17a8d9,_0x34edeb){const _0x52f6b2=_0x5c7ee3;let _0x1b4ed8=Math[_0x52f6b2(0xd3)](0x0,Math[_0x52f6b2(0xd7)](0x37,_0x34edeb));const _0x35df80=interpPiecewise(baseline30Data,_0x17a8d9),_0xedc6b=_0x35df80*interpPiecewise(reduceData,_0x17a8d9);if(_0x1b4ed8<0x1e){const _0x25ec36=0x1388;return _0x25ec36+_0x1b4ed8/0x1e*(_0x35df80-_0x25ec36);}if(_0x1b4ed8<=0x32)return _0x35df80+(_0x1b4ed8-0x1e)/0x14*(_0xedc6b-_0x35df80);return _0xedc6b;}const turnGain=0xf,lowFactor=0.02084;let heading=0x0,speed=0x0;const pos={'x':0x0,'y':0x0};let oldPos={'x':0x0,'y':0x0},lapActive=!0x1,lapStartTime=0x0,currentLapTime=0x0;const laps=[];let distanceTraveled=0x0,topSpeedKmh=0x0,minSpeedKmh=0x1/0x0,sumSpeeds=0x0,frameCount=0x0,lastPosTelemetry={'x':0x0,'y':0x0},collidedThisLap=!0x1,penaltySeconds=0x0,ghostData=null,recordedGhost=[];function pixelToTrackMeters(_0x4789f9,_0x5ee125){const _0x5580b5=_0x5c7ee3,_0x34c89e=_0x4789f9-trackOffset['x'],_0x235f77=_0x5ee125-trackOffset['y'];return{'x':_0x34c89e/currentTrack[_0x5580b5(0xc6)],'y':(canvas[_0x5580b5(0xd2)]-_0x235f77)/currentTrack[_0x5580b5(0xc6)]};}function trackMetersToPixel(_0x1c3d73,_0x19849a){const _0x14ed3d=_0x5c7ee3,_0x47810d=_0x1c3d73*currentTrack[_0x14ed3d(0xc6)],_0x40658b=canvas[_0x14ed3d(0xd2)]-_0x19849a*currentTrack[_0x14ed3d(0xc6)];return{'x':_0x47810d+trackOffset['x'],'y':_0x40658b+trackOffset['y']};}function recordGhostData(_0x5a4b09){const _0x1a1fd0=_0x5c7ee3;if(!lapActive)return;const _0xbd9006=pixelToTrackMeters(pos['x'],pos['y']);recordedGhost[_0x1a1fd0(0xb6)]({'time':_0x5a4b09,'x':_0xbd9006['x'],'y':_0xbd9006['y'],'heading':heading});}function getGhostPosition(_0x42f6df){const _0xa420fc=_0x5c7ee3;if(!ghostData||0x0===ghostData[_0xa420fc(0xed)])return null;for(let _0x1f1636=0x1;_0x1f1636<ghostData[_0xa420fc(0xed)];_0x1f1636++){const _0x3fd9aa=ghostData[_0x1f1636-0x1],_0x17224d=ghostData[_0x1f1636];if(_0x3fd9aa[_0xa420fc(0xe0)]<=_0x42f6df&&_0x17224d[_0xa420fc(0xe0)]>=_0x42f6df){const _0x12eca0=(_0x42f6df-_0x3fd9aa['time'])/(_0x17224d['time']-_0x3fd9aa['time']);return{'x':_0x3fd9aa['x']+_0x12eca0*(_0x17224d['x']-_0x3fd9aa['x']),'y':_0x3fd9aa['y']+_0x12eca0*(_0x17224d['y']-_0x3fd9aa['y']),'heading':_0x3fd9aa['heading']+_0x12eca0*(_0x17224d['heading']-_0x3fd9aa['heading'])};}}const _0x3234f9=ghostData[ghostData['length']-0x1];return _0x42f6df>_0x3234f9[_0xa420fc(0xe0)]?_0x3234f9:ghostData[0x0];}function drawGhost(_0xe89602){const _0xcd7d2c=_0x5c7ee3;if(!lapActive||!ghostData)return;const _0x44215b=getGhostPosition(_0xe89602);if(!_0x44215b)return;const {x:_0x2ab06c,y:_0xf1e122}=trackMetersToPixel(_0x44215b['x'],_0x44215b['y']);ctx[_0xcd7d2c(0xdd)](),ctx[_0xcd7d2c(0x9c)]=0.25,ctx[_0xcd7d2c(0xe7)](_0x2ab06c,_0xf1e122),ctx[_0xcd7d2c(0x11a)](_0x44215b[_0xcd7d2c(0xc0)]-Math['PI']/0x2),ctx[_0xcd7d2c(0xe1)](),ctx[_0xcd7d2c(0xdb)](0x0,12.5),ctx[_0xcd7d2c(0xc5)](0x4,7.5,0x4,-7.5,0x0,-12.5),ctx[_0xcd7d2c(0xc5)](-0x4,-7.5,-0x4,7.5,0x0,12.5),ctx['closePath'](),ctx['fillStyle']=_0xcd7d2c(0xef),ctx[_0xcd7d2c(0xd5)](),ctx[_0xcd7d2c(0xf2)](),ctx['globalAlpha']=0x1;}function startLap(){const _0x3e5638=_0x5c7ee3;lapStartTime=performance[_0x3e5638(0x108)](),currentLapTime=0x0,lapActive=!0x0,distanceTraveled=0x0,topSpeedKmh=0x0,minSpeedKmh=0x1/0x0,sumSpeeds=0x0,frameCount=0x0,lastPosTelemetry['x']=pos['x'],lastPosTelemetry['y']=pos['y'],collidedThisLap=!0x1,penaltySeconds=0x0,recordedGhost=[];}function finalizeLap(){const _0x13f2ef=_0x5c7ee3;lapActive=!0x1;const _0x174eb9=(performance[_0x13f2ef(0x108)]()-lapStartTime)/0x3e8;currentLapTime=_0x174eb9+penaltySeconds;const _0xce4338=frameCount>0x0?sumSpeeds/frameCount:0x0;laps[_0x13f2ef(0x102)]({'topSpeed':topSpeedKmh,'minSpeed':minSpeedKmh===0x1/0x0?0x0:minSpeedKmh,'avgSpeed':_0xce4338,'distance':distanceTraveled,'finalTime':currentLapTime}),laps[_0x13f2ef(0xed)]>0x4&&laps['pop'](),ghostData=recordedGhost[_0x13f2ef(0xae)]();}const keys={};function orientation(_0x4a1e8c,_0x3b5966,_0x420611){return(_0x3b5966['y']-_0x4a1e8c['y'])*(_0x420611['x']-_0x3b5966['x'])-(_0x3b5966['x']-_0x4a1e8c['x'])*(_0x420611['y']-_0x3b5966['y']);}function linesIntersect(_0x134c2a,_0x2de7d0,_0x442ea9,_0x173d15,_0x2e314a,_0x4854de,_0xa3e67a,_0x98d841){const _0x39203a={'x':_0x134c2a,'y':_0x2de7d0},_0x5dc719={'x':_0x442ea9,'y':_0x173d15},_0x36343e={'x':_0x2e314a,'y':_0x4854de},_0x2d6ec1={'x':_0xa3e67a,'y':_0x98d841},_0x2b9b95=orientation(_0x39203a,_0x5dc719,_0x36343e),_0x45517d=orientation(_0x39203a,_0x5dc719,_0x2d6ec1),_0x41ec61=orientation(_0x36343e,_0x2d6ec1,_0x39203a),_0x42e8a4=orientation(_0x36343e,_0x2d6ec1,_0x5dc719);return(_0x2b9b95>0x0&&_0x45517d<0x0||_0x2b9b95<0x0&&_0x45517d>0x0)&&(_0x41ec61>0x0&&_0x42e8a4<0x0||_0x41ec61<0x0&&_0x42e8a4>0x0);}function checkLapCrossing(){const _0x37b54d=_0x5c7ee3;0x0!==pos['x']&&pos['x']!==canvas[_0x37b54d(0x117)]&&0x0!==pos['y']&&pos['y']!==canvas[_0x37b54d(0xd2)]&&linesIntersect(oldPos['x'],oldPos['y'],pos['x'],pos['y'],timingLine['x1'],timingLine['y1'],timingLine['x2'],timingLine['y2'])&&(lapActive?(finalizeLap(),boomStopAudio[_0x37b54d(0xd0)]=0x0,boomStopAudio[_0x37b54d(0xe5)]()[_0x37b54d(0xf1)](_0x4b17ab=>console[_0x37b54d(0x106)](_0x37b54d(0xd6),_0x4b17ab)),fadeOutMusic()):(startLap(),musicAudio[_0x37b54d(0xec)]=0x1,musicAudio[_0x37b54d(0xd0)]=0x0,musicAudio[_0x37b54d(0xe5)]()[_0x37b54d(0xf1)](_0x221da0=>console[_0x37b54d(0x106)](_0x37b54d(0xba),_0x221da0))));}function checkBuoyCollisions(){const _0x29546b=_0x5c7ee3;if(lapActive&&!collidedThisLap)for(const _0x15ee66 of buoys){const _0x108fef=_0x15ee66['x']-pos['x'],_0x546a02=_0x15ee66['y']-pos['y'];if(Math[_0x29546b(0x118)](_0x108fef,_0x546a02)<0xc){penaltySeconds+=0xa,collidedThisLap=!0x0,collisionAudio['currentTime']=0x0,collisionAudio['play']()[_0x29546b(0xf1)](_0x2175b9=>console[_0x29546b(0x106)](_0x29546b(0x11c),_0x2175b9));break;}}}function update(_0x4e51a){const _0x3d694f=_0x5c7ee3;oldPos['x']=pos['x'],oldPos['y']=pos['y'],keys[_0x3d694f(0xa3)]&&(speed+=accelRate*_0x4e51a),keys['ArrowDown']&&(speed-=decelRate*_0x4e51a),speed=Math['max'](0x0,Math[_0x3d694f(0xd7)](maxSpeed,speed)),updateBankAngle(_0x4e51a);const _0xd7d60b=speed*speedConversion,_0x4d64c2=getTurnRadius(_0xd7d60b,Math[_0x3d694f(0xf5)](bankAngleDeg)),_0x14b11b=bankAngleDeg*Math['PI']/0xb4,_0x4f37f2=Math[_0x3d694f(0xc3)](bankAngleDeg)*(Math['abs'](_0x14b11b)*turnGain)*(0x1/_0x4d64c2+lowFactor);heading+=_0x4f37f2*_0x4e51a,pos['x']+=speed*speedScale*_0x4e51a*Math[_0x3d694f(0xcb)](heading),pos['y']+=speed*speedScale*_0x4e51a*Math[_0x3d694f(0xfe)](heading);let _0x7c652b=!0x1;if(pos['x']>canvas[_0x3d694f(0x117)]?(pos['x']=0x0,_0x7c652b=!0x0):pos['x']<0x0&&(pos['x']=canvas[_0x3d694f(0x117)],_0x7c652b=!0x0),pos['y']>canvas[_0x3d694f(0xd2)]?(pos['y']=0x0,_0x7c652b=!0x0):pos['y']<0x0&&(pos['y']=canvas[_0x3d694f(0xd2)],_0x7c652b=!0x0),windAudio['volume']=speed/maxSpeed,document[_0x3d694f(0xf0)](_0x3d694f(0xf9))[_0x3d694f(0x100)]=_0x3d694f(0xa1)+_0xd7d60b[_0x3d694f(0x11b)](0x1)+_0x3d694f(0x9d),document[_0x3d694f(0xf0)](_0x3d694f(0x103))['innerText']=_0x3d694f(0xb1)+bankAngleDeg[_0x3d694f(0x11b)](0x0)+'°',_0x7c652b||checkLapCrossing(),lapActive){_0xd7d60b>topSpeedKmh&&(topSpeedKmh=_0xd7d60b),_0xd7d60b<minSpeedKmh&&(minSpeedKmh=_0xd7d60b),sumSpeeds+=_0xd7d60b,frameCount++;const _0x5d206e=pos['x']-lastPosTelemetry['x'],_0x4dd790=pos['y']-lastPosTelemetry['y'],_0x5172e7=Math[_0x3d694f(0x118)](_0x5d206e,_0x4dd790)/currentTrack[_0x3d694f(0xc6)];distanceTraveled+=_0x5172e7,lastPosTelemetry['x']=pos['x'],lastPosTelemetry['y']=pos['y'],checkBuoyCollisions();const _0x324752=(performance[_0x3d694f(0x108)]()-lapStartTime)/0x3e8;recordGhostData(_0x324752);const _0x40dd61=_0x324752+penaltySeconds;document[_0x3d694f(0xf0)](_0x3d694f(0xf3))['innerText']=penaltySeconds>0x0&&collidedThisLap?_0x3d694f(0x9e)+_0x40dd61[_0x3d694f(0x11b)](0x2)+_0x3d694f(0xa7)+penaltySeconds+_0x3d694f(0x104):'Laptime:\x20'+_0x40dd61[_0x3d694f(0x11b)](0x2);}else document['getElementById'](_0x3d694f(0xf3))[_0x3d694f(0x100)]=penaltySeconds>0x0?_0x3d694f(0x9e)+currentLapTime['toFixed'](0x2)+'\x20(-\x20'+penaltySeconds+_0x3d694f(0x104):_0x3d694f(0x9e)+currentLapTime['toFixed'](0x2);}document[_0x5c7ee3(0xb3)]('keydown',_0x856b5c=>{keys[_0x856b5c['key']]=!0x0;}),document[_0x5c7ee3(0xb3)]('keyup',_0x34ce4e=>{const _0x3f6630=_0x5c7ee3;keys[_0x34ce4e[_0x3f6630(0xe3)]]=!0x1;});let wakeTrail=[];function _0x4a7b(_0xc28053,_0x5918a8){const _0x36f815=_0x36f8();return _0x4a7b=function(_0x4a7bcd,_0xaf98){_0x4a7bcd=_0x4a7bcd-0x9c;let _0x58d2ea=_0x36f815[_0x4a7bcd];return _0x58d2ea;},_0x4a7b(_0xc28053,_0x5918a8);}function totalTrailDistance(_0x5e7803){const _0x2a185c=_0x5c7ee3;let _0x4b8f0a=0x0;for(let _0x3ce056=0x1;_0x3ce056<_0x5e7803[_0x2a185c(0xed)];_0x3ce056++)_0x4b8f0a+=Math[_0x2a185c(0x118)](_0x5e7803[_0x3ce056]['x']-_0x5e7803[_0x3ce056-0x1]['x'],_0x5e7803[_0x3ce056]['y']-_0x5e7803[_0x3ce056-0x1]['y']);return _0x4b8f0a;}function drawWake(){const _0x4bffb4=_0x5c7ee3;if(!(wakeTrail['length']<0x2))for(let _0x456afe=0x1;_0x456afe<wakeTrail[_0x4bffb4(0xed)];_0x456afe++){const _0x49111e=_0x456afe/wakeTrail[_0x4bffb4(0xed)];ctx['beginPath'](),ctx[_0x4bffb4(0xdb)](wakeTrail[_0x456afe-0x1]['x'],wakeTrail[_0x456afe-0x1]['y']),ctx[_0x4bffb4(0xbd)](wakeTrail[_0x456afe]['x'],wakeTrail[_0x456afe]['y']),ctx[_0x4bffb4(0xa5)]=_0x4bffb4(0xaf)+_0x49111e[_0x4bffb4(0x11b)](0x2)+')',ctx[_0x4bffb4(0xf4)]=0x2,ctx[_0x4bffb4(0xa8)]();}}function drawTrack(){const _0x22cdd4=_0x5c7ee3;buoys['forEach'](_0x3fde3f=>{const _0x9260af=_0x4a7b;ctx[_0x9260af(0xe1)](),ctx[_0x9260af(0xb7)](_0x3fde3f['x'],_0x3fde3f['y'],0x8,0x0,0x2*Math['PI']),ctx[_0x9260af(0xeb)]=_0x9260af(0x10c),ctx['fill'](),ctx[_0x9260af(0xf4)]=0x2,ctx['strokeStyle']=_0x9260af(0xe9),ctx[_0x9260af(0xa8)]();}),ctx[_0x22cdd4(0xe1)](),ctx[_0x22cdd4(0xdb)](timingLine['x1'],timingLine['y1']),ctx[_0x22cdd4(0xbd)](timingLine['x2'],timingLine['y2']),ctx[_0x22cdd4(0xa5)]='red',ctx[_0x22cdd4(0xf4)]=0x1,ctx[_0x22cdd4(0xa8)]();}function drawTelemetry(){const _0x5e79ca=_0x5c7ee3;ctx[_0x5e79ca(0xdd)](),ctx[_0x5e79ca(0x111)]=_0x5e79ca(0xf6),ctx[_0x5e79ca(0xeb)]=_0x5e79ca(0xe9);let _0x3766e5=0x14,_0x2c492e=0x32;ctx['fillText'](_0x5e79ca(0xdc),_0x3766e5,_0x2c492e),_0x2c492e+=0x14,laps[_0x5e79ca(0x114)]((_0x725eb6,_0x1b9489)=>{const _0x57e3ad=_0x5e79ca;ctx[_0x57e3ad(0xc4)](_0x57e3ad(0xf8)+(_0x1b9489+0x1)+':',_0x3766e5,_0x2c492e),_0x2c492e+=0x12,ctx['fillText'](_0x57e3ad(0xda)+_0x725eb6['finalTime'][_0x57e3ad(0x11b)](0x2)+'\x20s',_0x3766e5,_0x2c492e),_0x2c492e+=0x12,ctx[_0x57e3ad(0xc4)](_0x57e3ad(0xcd)+_0x725eb6[_0x57e3ad(0xe8)][_0x57e3ad(0x11b)](0x1)+'\x20m',_0x3766e5,_0x2c492e),_0x2c492e+=0x12,ctx[_0x57e3ad(0xc4)]('\x20\x20TopSpd:\x20'+_0x725eb6[_0x57e3ad(0xd8)][_0x57e3ad(0x11b)](0x1)+_0x57e3ad(0x9d),_0x3766e5,_0x2c492e),_0x2c492e+=0x12,ctx['fillText'](_0x57e3ad(0x10e)+_0x725eb6[_0x57e3ad(0xac)][_0x57e3ad(0x11b)](0x1)+_0x57e3ad(0x9d),_0x3766e5,_0x2c492e),_0x2c492e+=0x12,ctx[_0x57e3ad(0xc4)](_0x57e3ad(0xa0)+_0x725eb6['avgSpeed'][_0x57e3ad(0x11b)](0x1)+_0x57e3ad(0x9d),_0x3766e5,_0x2c492e),_0x2c492e+=0x18;}),ctx[_0x5e79ca(0xf2)]();}function drawRacer(){const _0x6be8ae=_0x5c7ee3;ctx[_0x6be8ae(0xdd)](),ctx[_0x6be8ae(0xe7)](pos['x'],pos['y']),ctx[_0x6be8ae(0x11a)](heading-Math['PI']/0x2),ctx[_0x6be8ae(0xe1)](),ctx['moveTo'](0x0,12.5),ctx['bezierCurveTo'](0x4,7.5,0x4,-7.5,0x0,-12.5),ctx[_0x6be8ae(0xc5)](-0x4,-7.5,-0x4,7.5,0x0,12.5),ctx['closePath'](),ctx[_0x6be8ae(0xeb)]=_0x6be8ae(0xb9),ctx[_0x6be8ae(0xd5)](),ctx[_0x6be8ae(0xf2)]();}function drawGhostFrame(){const _0x4341ad=_0x5c7ee3;if(lapActive)drawGhost((performance[_0x4341ad(0x108)]()-lapStartTime)/0x3e8);else drawGhost(currentLapTime);}let lastTimestamp=0x0;function gameLoop(_0x483928){const _0x54d6c8=_0x5c7ee3;lastTimestamp||(lastTimestamp=_0x483928);let _0x3c1bad=(_0x483928-lastTimestamp)/0x3e8;lastTimestamp=_0x483928,_0x3c1bad>0.1&&(_0x3c1bad=0.1),wakeTrail[_0x54d6c8(0xb6)]({'x':pos['x'],'y':pos['y']});const _0x46a1fd=speed/maxSpeed*0xc8;for(;wakeTrail[_0x54d6c8(0xed)]>0x1&&totalTrailDistance(wakeTrail)>_0x46a1fd;)wakeTrail[_0x54d6c8(0x105)]();update(_0x3c1bad),ctx[_0x54d6c8(0xa9)](0x0,0x0,canvas['width'],canvas[_0x54d6c8(0xd2)]),ctx['fillStyle']='#222',ctx[_0x54d6c8(0x10f)](0x0,0x0,canvas[_0x54d6c8(0x117)],canvas[_0x54d6c8(0xd2)]),drawTrack(),drawWake(),drawGhostFrame(),drawRacer(),drawTelemetry(),requestAnimationFrame(gameLoop);}const exportGhostBtn=document[_0x5c7ee3(0xf0)](_0x5c7ee3(0xb0)),importGhostFile=document[_0x5c7ee3(0xf0)](_0x5c7ee3(0xc9)),clearGhostBtn=document['getElementById'](_0x5c7ee3(0xe6));exportGhostBtn[_0x5c7ee3(0xb3)](_0x5c7ee3(0xd4),()=>{const _0x2cb8d6=_0x5c7ee3;if(!ghostData||0x0===ghostData[_0x2cb8d6(0xed)])return void alert(_0x2cb8d6(0xc8));const _0x2b2d7c=JSON['stringify'](ghostData),_0x158536=new Blob([_0x2b2d7c],{'type':_0x2cb8d6(0xff)}),_0x3bd0d7=URL[_0x2cb8d6(0xe2)](_0x158536),_0x39900a=document[_0x2cb8d6(0xea)]('a');_0x39900a['href']=_0x3bd0d7,_0x39900a[_0x2cb8d6(0xe4)]='lapData.json',document[_0x2cb8d6(0x107)][_0x2cb8d6(0xcc)](_0x39900a),_0x39900a[_0x2cb8d6(0xd4)](),document[_0x2cb8d6(0x107)]['removeChild'](_0x39900a),URL['revokeObjectURL'](_0x3bd0d7);}),importGhostFile[_0x5c7ee3(0xb3)](_0x5c7ee3(0x9f),async _0x1e103e=>{const _0x4d28be=_0x5c7ee3,_0x571c29=_0x1e103e[_0x4d28be(0xfa)]['files'][0x0];if(_0x571c29)try{const _0x442330=await _0x571c29[_0x4d28be(0xde)](),_0xf9f12c=JSON[_0x4d28be(0xb4)](_0x442330);Array[_0x4d28be(0x109)](_0xf9f12c)&&_0xf9f12c[_0x4d28be(0xed)]>0x0?(ghostData=_0xf9f12c,alert('Ghost\x20data\x20imported\x20successfully!\x20It\x20will\x20appear\x20on\x20your\x20next\x20lap.')):alert(_0x4d28be(0xd9));}catch(_0x10d90c){alert(_0x4d28be(0xd1)+_0x10d90c);}}),clearGhostBtn[_0x5c7ee3(0xb3)](_0x5c7ee3(0xd4),()=>{ghostData=null,alert('Ghost\x20data\x20cleared.');}),resizeCanvas(),pos['x']=canvas[_0x5c7ee3(0x117)]/0x2,pos['y']=canvas[_0x5c7ee3(0xd2)]/0x2,requestAnimationFrame(gameLoop);
+////////////////////////////////////////////////////////////
+// engine.js
+////////////////////////////////////////////////////////////
+
+// --- Canvas and Context ---
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// --- Track Setup Variables ---
+// We store both the "current track object" and the "current track key."
+// This way we can easily switch tracks by key (e.g. 'speedTrack' / 'dubaiTrack'),
+// and also store that key in the ghost data.
+let currentTrackKey = 'speedTrack';                 // default key
+let currentTrack    = trackConfigs[currentTrackKey]; // default track object
+
+let buoyPixels = [];
+let buoys = [];
+let timingLine = { x1: 0, y1: 0, x2: 0, y2: 0 };
+
+// We'll store the offset used to center the track on the canvas.
+let trackOffset = { x: 0, y: 0 };
+
+// --- Compute Buoys Function ---
+function computeBuoys(){
+  buoyPixels = currentTrack.buoys.map(b => ({
+    x: b.x * currentTrack.scale,
+    y: canvas.height - (b.y * currentTrack.scale)
+  }));
+  
+  const centroid = buoyPixels.reduce((sum, b) => ({
+    x: sum.x + b.x,
+    y: sum.y + b.y
+  }), { x: 0, y: 0 });
+  centroid.x /= buoyPixels.length;
+  centroid.y /= buoyPixels.length;
+  
+  trackOffset.x = canvas.width / 2 - centroid.x;
+  trackOffset.y = canvas.height / 2 - centroid.y;
+  
+  buoys = buoyPixels.map(b => ({
+    x: b.x + trackOffset.x,
+    y: b.y + trackOffset.y
+  }));
+  
+  timingLine = currentTrack.computeTimingLine(buoys, canvas);
+}
+
+// --- Audio Setup ---
+const windAudio      = document.getElementById('windAudio');
+const musicAudio     = document.getElementById('musicAudio');
+const boomStopAudio  = document.getElementById('boomStopAudio');
+const collisionAudio = document.getElementById('collisionAudio');
+
+musicAudio.loop = true;
+
+function fadeOutMusic(){
+  if (!musicAudio.paused) {
+    let volume = 1.0;
+    const fadeTime = 5000;
+    const steps = 50;
+    const fadeInterval = fadeTime / steps;
+    const step = 1 / steps;
+    function doFade(){
+      volume = Math.max(0, volume - step);
+      musicAudio.volume = volume;
+      if (volume > 0) {
+        setTimeout(doFade, fadeInterval);
+      } else {
+        musicAudio.pause();
+        musicAudio.currentTime = 0;
+        musicAudio.volume = 1.0;
+      }
+    }
+    doFade();
+  }
+}
+
+function enableAudio(){
+  windAudio.play().catch(err => console.warn("Wind audio failed", err));
+  document.removeEventListener('keydown', enableAudio);
+}
+document.addEventListener('keydown', enableAudio, { once: true });
+
+// --- Canvas Resize ---
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  computeBuoys();
+}
+window.addEventListener('resize', resizeCanvas);
+
+// --- Track Selector Handling ---
+// We also store which key is chosen. That way, finalizing a lap will know which track was used.
+const trackRadios = document.querySelectorAll('input[name="track"]');
+trackRadios.forEach(radio => {
+  radio.addEventListener('change', function(){
+    if (this.checked) {
+      currentTrackKey = this.value;                 // e.g. 'speedTrack'
+      currentTrack    = trackConfigs[currentTrackKey];
+      computeBuoys();
+    }
+  });
+});
+
+// --- Game Physics and Control Variables ---
+const maxSpeed = 100;
+const timeToMaxSpeed = 18;
+const accelRate = maxSpeed / timeToMaxSpeed;
+const decelRate = 12.333;
+const speedConversion = 0.6;
+const speedScale = 0.837;
+
+const BANK_ANGLE_MAX = 55;
+const bankRate0to30 = 40;
+const bankRate30to55 = 10;
+let bankAngleDeg = 0;
+const bankDecay = 0.9;
+
+function updateBankAngle(dt){
+  let targetSign = 0;
+  if (keys['ArrowLeft'])  targetSign = -1;
+  if (keys['ArrowRight']) targetSign =  1;
+  
+  if (targetSign !== 0) {
+    let currentMag = Math.abs(bankAngleDeg);
+    let sign = Math.sign(bankAngleDeg);
+    if (sign === 0) sign = targetSign;
+    if (sign !== targetSign) {
+      currentMag = 0;
+      bankAngleDeg = 0;
+      sign = targetSign;
+    }
+    let rate = (currentMag < 30) ? bankRate0to30 : bankRate30to55;
+    currentMag += rate * dt;
+    if (currentMag > BANK_ANGLE_MAX) currentMag = BANK_ANGLE_MAX;
+    bankAngleDeg = sign * currentMag;
+  } else {
+    if (Math.abs(bankAngleDeg) < 0.5) {
+      bankAngleDeg = 0;
+    } else {
+      const decayPow = Math.pow(bankDecay, 60 * dt);
+      bankAngleDeg *= decayPow;
+      if (Math.abs(bankAngleDeg) < 0.05) bankAngleDeg = 0;
+    }
+  }
+}
+
+// --- Turn Radius Interpolation ---
+const baseline30Data = [
+  { speed:10, radius:10 },
+  { speed:15, radius:15 },
+  { speed:30, radius:30 },
+  { speed:40, radius:65 },
+  { speed:60, radius:80 }
+];
+const reduceData = [
+  { speed:10, factor:0.85 },
+  { speed:15, factor:0.82 },
+  { speed:30, factor:0.83 },
+  { speed:40, factor:0.85 },
+  { speed:60, factor:0.90 }
+];
+
+function interpPiecewise(table, spd){
+  let s = Math.max(10, Math.min(60, spd));
+  for (let i = 1; i < table.length; i++){
+    const prev = table[i-1];
+    const cur  = table[i];
+    if (s >= prev.speed && s <= cur.speed) {
+      const span   = cur.speed - prev.speed;
+      const ratio  = (s - prev.speed) / span;
+      const valPrev= (prev.radius !== undefined) ? prev.radius : prev.factor;
+      const valCur = (cur.radius  !== undefined) ? cur.radius  : cur.factor;
+      return valPrev + (valCur - valPrev) * ratio;
+    }
+  }
+  if (s <= table[0].speed) {
+    return (table[0].radius !== undefined) ? table[0].radius : table[0].factor;
+  }
+  const last = table[table.length - 1];
+  return (last.radius !== undefined) ? last.radius : last.factor;
+}
+
+function getTurnRadius(speedKmh, angleDeg){
+  let ang = Math.max(0, Math.min(55, angleDeg));
+  const base30 = interpPiecewise(baseline30Data, speedKmh);
+  const factorMax = interpPiecewise(reduceData, speedKmh);
+  const radiusAt50 = base30 * factorMax;
+  
+  if (ang < 30) {
+    const frac = ang / 30;
+    const bigVal = 5000;
+    return bigVal + frac * (base30 - bigVal);
+  } else if (ang <= 50) {
+    const frac = (ang - 30) / 20;
+    return base30 + frac * (radiusAt50 - base30);
+  } else {
+    return radiusAt50;
+  }
+}
+
+const turnGain = 15;
+const lowFactor = 0.02084;
+
+// --- Movement & Telemetry ---
+let heading = 0;
+let speed = 0;
+const pos = { x: 0, y: 0 };
+let oldPos = { x: 0, y: 0 };
+
+let lapActive = false;
+let lapStartTime = 0;
+let currentLapTime = 0;
+
+const laps = [];
+
+let distanceTraveled = 0;
+let topSpeedKmh = 0;
+let minSpeedKmh = Infinity;
+let sumSpeeds = 0;
+let frameCount = 0;
+let lastPosTelemetry = { x: 0, y: 0 };
+
+let collidedThisLap = false;
+let penaltySeconds = 0;
+
+// --- Ghost Data & Functions ---
+// We'll store an object: { trackKey: ..., frames: [...] } so we know the track used.
+let ghostData = null;
+let recordedGhost = [];
+
+// Convert pixel coords to track meters.
+function pixelToTrackMeters(px, py) {
+  const localX = px - trackOffset.x;
+  const localY = py - trackOffset.y;
+  const metersX = localX / currentTrack.scale;
+  const metersY = (canvas.height - localY) / currentTrack.scale;
+  return { x: metersX, y: metersY };
+}
+
+// Convert track meters back to pixel coords.
+function trackMetersToPixel(mx, my) {
+  const localX = mx * currentTrack.scale;
+  const localY = canvas.height - (my * currentTrack.scale);
+  return {
+    x: localX + trackOffset.x,
+    y: localY + trackOffset.y
+  };
+}
+
+// Record each frame's position in "meters" instead of pixels.
+function recordGhostData(timeSec){
+  if (!lapActive) return;
+  const trackM = pixelToTrackMeters(pos.x, pos.y);
+  recordedGhost.push({
+    time: timeSec,
+    x: trackM.x,
+    y: trackM.y,
+    heading
+  });
+}
+
+function getGhostPosition(t){
+  if (!ghostData || !ghostData.frames || ghostData.frames.length === 0) return null;
+  const frames = ghostData.frames;
+  
+  for (let i = 1; i < frames.length; i++){
+    const prev = frames[i-1];
+    const cur  = frames[i];
+    if (prev.time <= t && cur.time >= t) {
+      const ratio = (t - prev.time) / (cur.time - prev.time);
+      const x = prev.x + ratio * (cur.x - prev.x);
+      const y = prev.y + ratio * (cur.y - prev.y);
+      const h = prev.heading + ratio * (cur.heading - prev.heading);
+      return { x, y, heading: h };
+    }
+  }
+  const last = frames[frames.length - 1];
+  if (t > last.time) return last;
+  return frames[0];
+}
+
+function drawGhost(timeSec){
+  if (!lapActive || !ghostData || !ghostData.frames) return;
+  const gp = getGhostPosition(timeSec);
+  if (!gp) return;
+  
+  // convert from meters to pixels
+  const { x: px, y: py } = trackMetersToPixel(gp.x, gp.y);
+  
+  ctx.save();
+  ctx.globalAlpha = 0.25;
+  ctx.translate(px, py);
+  ctx.rotate(gp.heading - Math.PI / 2);
+  ctx.beginPath();
+  ctx.moveTo(0, 12.5);
+  ctx.bezierCurveTo(4, 7.5, 4, -7.5, 0, -12.5);
+  ctx.bezierCurveTo(-4, -7.5, -4, 7.5, 0, 12.5);
+  ctx.closePath();
+  ctx.fillStyle = '#ff88ff';
+  ctx.fill();
+  ctx.restore();
+  ctx.globalAlpha = 1.0;
+}
+
+function startLap(){
+  lapStartTime = performance.now();
+  currentLapTime = 0;
+  lapActive = true;
+  
+  distanceTraveled = 0;
+  topSpeedKmh = 0;
+  minSpeedKmh = Infinity;
+  sumSpeeds = 0;
+  frameCount = 0;
+  
+  lastPosTelemetry.x = pos.x;
+  lastPosTelemetry.y = pos.y;
+  
+  collidedThisLap = false;
+  penaltySeconds = 0;
+  
+  recordedGhost = [];
+}
+
+function finalizeLap(){
+  lapActive = false;
+  const rawTime = (performance.now() - lapStartTime) / 1000;
+  currentLapTime = rawTime + penaltySeconds;
+  
+  const avgSpeedKmh = (frameCount > 0) ? (sumSpeeds / frameCount) : 0;
+  laps.unshift({
+    topSpeed: topSpeedKmh,
+    minSpeed: (minSpeedKmh === Infinity ? 0 : minSpeedKmh),
+    avgSpeed: avgSpeedKmh,
+    distance: distanceTraveled,
+    finalTime: currentLapTime
+  });
+  if (laps.length > 4) laps.pop();
+  
+  // We'll store the track key used and all the recorded frames.
+  ghostData = {
+    trackKey: currentTrackKey,        // e.g. 'speedTrack' or 'dubaiTrack'
+    frames: recordedGhost.slice()
+  };
+}
+
+// --- Input Handling ---
+const keys = {};
+document.addEventListener('keydown', e => { keys[e.key] = true; });
+document.addEventListener('keyup',   e => { keys[e.key] = false; });
+
+// --- Intersection & Timing Line Crossing ---
+function orientation(p, q, r){
+  return (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+}
+
+function linesIntersect(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2){
+  const p1 = { x: ax1, y: ay1 }, p2 = { x: ax2, y: ay2 };
+  const p3 = { x: bx1, y: by1 }, p4 = { x: bx2, y: by2 };
+  const o1 = orientation(p1, p2, p3);
+  const o2 = orientation(p1, p2, p4);
+  const o3 = orientation(p3, p4, p1);
+  const o4 = orientation(p3, p4, p2);
+  if ((o1 > 0 && o2 < 0) || (o1 < 0 && o2 > 0)) {
+    if ((o3 > 0 && o4 < 0) || (o3 < 0 && o4 > 0)) return true;
+  }
+  return false;
+}
+
+function checkLapCrossing(){
+  if (pos.x === 0 || pos.x === canvas.width || pos.y === 0 || pos.y === canvas.height) {
+    return;
+  }
+  if (linesIntersect(oldPos.x, oldPos.y, pos.x, pos.y,
+                     timingLine.x1, timingLine.y1,
+                     timingLine.x2, timingLine.y2)) {
+    if (!lapActive) {
+      startLap();
+      musicAudio.volume = 1.0;
+      musicAudio.currentTime = 0;
+      musicAudio.play().catch(err => console.warn("Music play fail", err));
+    } else {
+      finalizeLap();
+      boomStopAudio.currentTime = 0;
+      boomStopAudio.play().catch(err => console.warn("Boom stop fail", err));
+      fadeOutMusic();
+    }
+  }
+}
+
+// --- Collision Detection with Buoys ---
+function checkBuoyCollisions(){
+  if (!lapActive || collidedThisLap) return;
+  
+  for (const b of buoys) {
+    const dx = b.x - pos.x;
+    const dy = b.y - pos.y;
+    const dist = Math.hypot(dx, dy);
+    if (dist < 12) {
+      penaltySeconds += 10;
+      collidedThisLap = true;
+      collisionAudio.currentTime = 0;
+      collisionAudio.play().catch(err => console.warn("Collision audio fail", err));
+      break;
+    }
+  }
+}
+
+// --- Update Function ---
+function update(dt){
+  oldPos.x = pos.x;
+  oldPos.y = pos.y;
+  
+  if (keys['ArrowUp']) {
+    speed += accelRate * dt;
+  }
+  if (keys['ArrowDown']) {
+    speed -= decelRate * dt;
+  }
+  speed = Math.max(0, Math.min(maxSpeed, speed));
+  
+  updateBankAngle(dt);
+  
+  const speedKmh = speed * speedConversion;
+  const radius   = getTurnRadius(speedKmh, Math.abs(bankAngleDeg));
+  const angleRad = (bankAngleDeg * Math.PI) / 180;
+  const turnFactor = Math.sign(bankAngleDeg) * (Math.abs(angleRad) * turnGain) * ((1 / radius) + lowFactor);
+  heading += turnFactor * dt;
+  
+  pos.x += speed * speedScale * dt * Math.cos(heading);
+  pos.y += speed * speedScale * dt * Math.sin(heading);
+  
+  let wrapped = false;
+  if (pos.x > canvas.width) { pos.x = 0; wrapped = true; }
+  else if (pos.x < 0)       { pos.x = canvas.width; wrapped = true; }
+  if (pos.y > canvas.height){ pos.y = 0; wrapped = true; }
+  else if (pos.y < 0)       { pos.y = canvas.height; wrapped = true; }
+  
+  windAudio.volume = speed / maxSpeed;
+  
+  document.getElementById('speedDisplay').innerText = `Speed: ${speedKmh.toFixed(1)} km/h`;
+  document.getElementById('bankAngleDisplay').innerText = `Bank: ${bankAngleDeg.toFixed(0)}°`;
+  
+  if (!wrapped) {
+    checkLapCrossing();
+  }
+  
+  if (lapActive) {
+    if (speedKmh > topSpeedKmh) topSpeedKmh = speedKmh;
+    if (speedKmh < minSpeedKmh) minSpeedKmh = speedKmh;
+    sumSpeeds += speedKmh;
+    frameCount++;
+    
+    const dx = pos.x - lastPosTelemetry.x;
+    const dy = pos.y - lastPosTelemetry.y;
+    const distPx = Math.hypot(dx, dy);
+    const distM  = distPx / currentTrack.scale;
+    distanceTraveled += distM;
+    lastPosTelemetry.x = pos.x;
+    lastPosTelemetry.y = pos.y;
+    
+    checkBuoyCollisions();
+    
+    const rawSec = (performance.now() - lapStartTime) / 1000;
+    recordGhostData(rawSec);
+    
+    const totalSec = rawSec + penaltySeconds;
+    if (penaltySeconds > 0 && collidedThisLap) {
+      document.getElementById('lapTimeDisplay').innerText = `Laptime: ${totalSec.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
+    } else {
+      document.getElementById('lapTimeDisplay').innerText = `Laptime: ${totalSec.toFixed(2)}`;
+    }
+  } else {
+    if (penaltySeconds > 0) {
+      document.getElementById('lapTimeDisplay').innerText = `Laptime: ${currentLapTime.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
+    } else {
+      document.getElementById('lapTimeDisplay').innerText = `Laptime: ${currentLapTime.toFixed(2)}`;
+    }
+  }
+}
+
+// --- Wake Trail and Drawing ---
+let wakeTrail = [];
+function totalTrailDistance(trail){
+  let d = 0;
+  for (let i = 1; i < trail.length; i++){
+    d += Math.hypot(trail[i].x - trail[i-1].x, trail[i].y - trail[i-1].y);
+  }
+  return d;
+}
+
+function drawWake(){
+  if (wakeTrail.length < 2) return;
+  for (let i = 1; i < wakeTrail.length; i++){
+    const t = i / wakeTrail.length;
+    const alpha = t;
+    ctx.beginPath();
+    ctx.moveTo(wakeTrail[i-1].x, wakeTrail[i-1].y);
+    ctx.lineTo(wakeTrail[i].x, wakeTrail[i].y);
+    ctx.strokeStyle = `rgba(255,255,255,${alpha.toFixed(2)})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+}
+
+function drawTrack(){
+  buoys.forEach(b => {
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, 8, 0, 2 * Math.PI);
+    ctx.fillStyle = '#FFFF00';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#fff';
+    ctx.stroke();
+  });
+  ctx.beginPath();
+  ctx.moveTo(timingLine.x1, timingLine.y1);
+  ctx.lineTo(timingLine.x2, timingLine.y2);
+  ctx.strokeStyle = 'red';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+}
+
+function drawTelemetry(){
+  ctx.save();
+  ctx.font = '14px monospace';
+  ctx.fillStyle = '#fff';
+  let x = 20, y = 50;
+  ctx.fillText('Telemetry:', x, y);
+  y += 20;
+  laps.forEach((lap, idx) => {
+    ctx.fillText(`Lap ${idx+1}:`, x, y); y += 18;
+    ctx.fillText(`  Time:   ${lap.finalTime.toFixed(2)} s`, x, y); y += 18;
+    ctx.fillText(`  Dist:   ${lap.distance.toFixed(1)} m`, x, y); y += 18;
+    ctx.fillText(`  TopSpd: ${lap.topSpeed.toFixed(1)} km/h`, x, y); y += 18;
+    ctx.fillText(`  MinSpd: ${lap.minSpeed.toFixed(1)} km/h`, x, y); y += 18;
+    ctx.fillText(`  AvgSpd: ${lap.avgSpeed.toFixed(1)} km/h`, x, y); y += 24;
+  });
+  ctx.restore();
+}
+
+function drawRacer(){
+  ctx.save();
+  ctx.translate(pos.x, pos.y);
+  ctx.rotate(heading - Math.PI / 2);
+  ctx.beginPath();
+  ctx.moveTo(0, 12.5);
+  ctx.bezierCurveTo(4, 7.5, 4, -7.5, 0, -12.5);
+  ctx.bezierCurveTo(-4, -7.5, -4, 7.5, 0, 12.5);
+  ctx.closePath();
+  ctx.fillStyle = '#00ccff';
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawGhostFrame(){
+  if (lapActive) {
+    const rawSec = (performance.now() - lapStartTime) / 1000;
+    drawGhost(rawSec);
+  } else {
+    drawGhost(currentLapTime);
+  }
+}
+
+// --- Main Game Loop ---
+let lastTimestamp = 0;
+function gameLoop(timestamp){
+  if (!lastTimestamp) lastTimestamp = timestamp;
+  let dt = (timestamp - lastTimestamp) / 1000;
+  lastTimestamp = timestamp;
+  if (dt > 0.1) dt = 0.1;
+  
+  wakeTrail.push({ x: pos.x, y: pos.y });
+  const targetWakeLength = (speed / maxSpeed) * 200;
+  while (wakeTrail.length > 1 && totalTrailDistance(wakeTrail) > targetWakeLength) {
+    wakeTrail.shift();
+  }
+  
+  update(dt);
+  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#222';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  drawTrack();
+  drawWake();
+  drawGhostFrame();
+  drawRacer();
+  drawTelemetry();
+  
+  requestAnimationFrame(gameLoop);
+}
+
+// --- Ghost Export / Import Controls ---
+const exportGhostBtn  = document.getElementById('exportGhostBtn');
+const importGhostFile = document.getElementById('importGhostFile');
+const clearGhostBtn   = document.getElementById('clearGhostBtn');
+
+exportGhostBtn.addEventListener('click', () => {
+  if (!ghostData || !ghostData.frames || ghostData.frames.length === 0) {
+    alert('No ghost data to export yet. Complete at least one lap.');
+    return;
+  }
+  const jsonData = JSON.stringify(ghostData);
+  const blob = new Blob([jsonData], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'lapData.json';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+});
+
+importGhostFile.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const imported = JSON.parse(text);
+
+    // Validate structure
+    if (!imported.frames || !Array.isArray(imported.frames)) {
+      alert('Invalid ghost data file.');
+      return;
+    }
+    // If the imported data has a trackKey, switch to that track so the scale/offset match
+    if (imported.trackKey && trackConfigs[imported.trackKey]) {
+      currentTrackKey = imported.trackKey;
+      currentTrack    = trackConfigs[currentTrackKey];
+      computeBuoys();
+    } else if (imported.trackKey) {
+      alert(`Warning: The ghost uses trackKey "${imported.trackKey}" which doesn't exist here!`);
+    }
+
+    ghostData = imported;
+    alert('Ghost data imported successfully! It will appear on your next lap.');
+  } catch (err) {
+    alert('Failed to read file: ' + err);
+  }
+});
+
+clearGhostBtn.addEventListener('click', () => {
+  ghostData = null;
+  alert('Ghost data cleared.');
+});
+
+// --- Initialization ---
+resizeCanvas();  
+pos.x = canvas.width / 2;
+pos.y = canvas.height / 2;
+requestAnimationFrame(gameLoop);
