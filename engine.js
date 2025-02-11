@@ -649,7 +649,7 @@ function drawIdealLine() {
   }
 
   ctx.save();
-  ctx.strokeStyle = 'rgba(0, 255, 255, 0.25)';
+  ctx.strokeStyle = 'rgba(0, 255, 255, 0.15)';
   ctx.lineWidth   = 3;
   ctx.beginPath();
 
