@@ -7,7 +7,7 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // --- Track Setup Variables ---
-let currentTrackKey = 'speedTrack';           // default track key
+let currentTrackKey = 'speedTrack'; // default track key
 let currentTrack    = trackConfigs[currentTrackKey]; // default track object
 
 let buoyPixels = [];
@@ -17,16 +17,18 @@ let timingLine = { x1: 0, y1: 0, x2: 0, y2: 0 };
 // We'll store the offset used to center the track on the canvas.
 let trackOffset = { x: 0, y: 0 };
 
-// For quick reference, gather all track keys in an array:
-const availableTrackKeys = Object.keys(trackConfigs); 
-// e.g., ["speedTrack", "dubaiTrack", ...]
+// Gather all track keys from trackConfigs, e.g. ["speedTrack", "dubaiTrack", ...]
+const availableTrackKeys = Object.keys(trackConfigs);
 
-function computeBuoys(){
+// --- Compute Buoys Function ---
+function computeBuoys() {
+  // Convert track buoys (in meters) to pixels
   buoyPixels = currentTrack.buoys.map(b => ({
 	x: b.x * currentTrack.scale,
 	y: canvas.height - (b.y * currentTrack.scale)
   }));
   
+  // Find the centroid
   const centroid = buoyPixels.reduce((sum, b) => ({
 	x: sum.x + b.x,
 	y: sum.y + b.y
@@ -34,14 +36,17 @@ function computeBuoys(){
   centroid.x /= buoyPixels.length;
   centroid.y /= buoyPixels.length;
   
+  // Center the track on the canvas
   trackOffset.x = canvas.width / 2 - centroid.x;
   trackOffset.y = canvas.height / 2 - centroid.y;
   
+  // Apply offset
   buoys = buoyPixels.map(b => ({
 	x: b.x + trackOffset.x,
 	y: b.y + trackOffset.y
   }));
   
+  // Compute timing line
   timingLine = currentTrack.computeTimingLine(buoys, canvas);
 }
 
@@ -55,12 +60,13 @@ musicAudio.loop = true;
 
 function fadeOutMusic(){
   if (!musicAudio.paused) {
-	let volume = 1.0;
+	let volume     = 1.0;
 	const fadeTime = 5000;
-	const steps = 50;
+	const steps    = 50;
+	const step     = 1 / steps;
 	const fadeInterval = fadeTime / steps;
-	const step = 1 / steps;
-	function doFade(){
+	
+	function doFade() {
 	  volume = Math.max(0, volume - step);
 	  musicAudio.volume = volume;
 	  if (volume > 0) {
@@ -89,15 +95,15 @@ function resizeCanvas() {
 }
 window.addEventListener('resize', resizeCanvas);
 
-// --- Track Selector Handling (Radio buttons) ---
+// --- Track Selector Handling (Radio Buttons) ---
 const trackRadios = document.querySelectorAll('input[name="track"]');
 trackRadios.forEach(radio => {
   radio.addEventListener('change', function(){
 	if (this.checked) {
-	  currentTrackKey = this.value;           
+	  currentTrackKey = this.value;
 	  currentTrack    = trackConfigs[currentTrackKey];
 	  computeBuoys();
-	  // If we switch tracks, we might clear or reload the ideal line
+	  // Reset or clear the ideal line
 	  idealLineData = null;
 	}
   });
@@ -117,7 +123,7 @@ const bankRate30to55 = 10;
 let bankAngleDeg     = 0;
 const bankDecay      = 0.9;
 
-function updateBankAngle(dt){
+function updateBankAngle(dt) {
   let targetSign = 0;
   if (keys['ArrowLeft'])  targetSign = -1;
   if (keys['ArrowRight']) targetSign =  1;
@@ -165,7 +171,7 @@ const reduceData = [
 function interpPiecewise(table, spd){
   let s = Math.max(10, Math.min(60, spd));
   for (let i = 1; i < table.length; i++){
-	const prev = table[i-1];
+	const prev = table[i - 1];
 	const cur  = table[i];
 	if (s >= prev.speed && s <= cur.speed) {
 	  const span   = cur.speed - prev.speed;
@@ -182,10 +188,10 @@ function interpPiecewise(table, spd){
   return (last.radius !== undefined) ? last.radius : last.factor;
 }
 
-function getTurnRadius(speedKmh, angleDeg){
+function getTurnRadius(speedKmh, angleDeg) {
   let ang = Math.max(0, Math.min(55, angleDeg));
   const base30    = interpPiecewise(baseline30Data, speedKmh);
-  const factorMax = interpPiecewise(reduceData, speedKmh);
+  const factorMax = interpPiecewise(reduceData,          speedKmh);
   const radiusAt50= base30 * factorMax;
   
   if (ang < 30) {
@@ -229,7 +235,6 @@ let penaltySeconds   = 0;
 let ghostData     = null;
 let recordedGhost = [];
 
-// Convert pixel coords to track meters.
 function pixelToTrackMeters(px, py) {
   const localX = px - trackOffset.x;
   const localY = py - trackOffset.y;
@@ -247,7 +252,7 @@ function trackMetersToPixel(mx, my) {
   };
 }
 
-function recordGhostData(timeSec){
+function recordGhostData(timeSec) {
   if (!lapActive) return;
   const trackM = pixelToTrackMeters(pos.x, pos.y);
   recordedGhost.push({
@@ -258,12 +263,12 @@ function recordGhostData(timeSec){
   });
 }
 
-function getGhostPosition(t){
+function getGhostPosition(t) {
   if (!ghostData || !ghostData.frames || ghostData.frames.length === 0) return null;
   const frames = ghostData.frames;
   
   for (let i = 1; i < frames.length; i++){
-	const prev = frames[i-1];
+	const prev = frames[i - 1];
 	const cur  = frames[i];
 	if (prev.time <= t && cur.time >= t) {
 	  const ratio = (t - prev.time) / (cur.time - prev.time);
@@ -327,31 +332,29 @@ function finalizeLap(){
   
   const avgSpeedKmh = (frameCount > 0) ? (sumSpeeds / frameCount) : 0;
   laps.unshift({
-	topSpeed: topSpeedKmh,
-	minSpeed: (minSpeedKmh === Infinity ? 0 : minSpeedKmh),
-	avgSpeed: avgSpeedKmh,
-	distance: distanceTraveled,
+	topSpeed : topSpeedKmh,
+	minSpeed : (minSpeedKmh === Infinity ? 0 : minSpeedKmh),
+	avgSpeed : avgSpeedKmh,
+	distance : distanceTraveled,
 	finalTime: currentLapTime
   });
   if (laps.length > 4) laps.pop();
   
   ghostData = {
 	trackKey: currentTrackKey,
-	frames: recordedGhost.slice()
+	frames  : recordedGhost.slice()
   };
 }
 
 // --- Input Handling ---
 const keys = {};
 
-// Toggle for “P” = ideal line, “T” = cycle tracks
 document.addEventListener('keydown', e => {
   keys[e.key] = true;
 
   // Toggle 'P' to show/hide the ideal line
   if (e.key === 'p' || e.key === 'P') {
 	showIdealLine = !showIdealLine;
-	// If we haven't loaded the line yet, load it now
 	if (showIdealLine && !idealLineData) {
 	  loadIdealLineForCurrentTrack();
 	}
@@ -367,20 +370,26 @@ document.addEventListener('keyup', e => {
   keys[e.key] = false;
 });
 
-// A simple function to move to the next track in availableTrackKeys
+// A simple function to cycle to the next track in availableTrackKeys
 function cycleToNextTrack() {
   const currentIndex = availableTrackKeys.indexOf(currentTrackKey);
-  if (currentIndex === -1) return; // Just in case
+  if (currentIndex === -1) return;
 
   // Move to the next track, wrap around if needed
   const nextIndex = (currentIndex + 1) % availableTrackKeys.length;
   currentTrackKey = availableTrackKeys[nextIndex];
   currentTrack    = trackConfigs[currentTrackKey];
+
+  // Update the radio buttons to reflect the new track
+  trackRadios.forEach(radio => {
+	radio.checked = (radio.value === currentTrackKey);
+  });
+  
   computeBuoys();
   
-  // Clear or reload ideal line if necessary
+  // Clear or reload ideal line if you want
   idealLineData  = null;
-  showIdealLine  = false; // or keep it on if you prefer
+  showIdealLine  = false;
 }
 
 // --- Intersection & Timing Line Crossing ---
@@ -427,8 +436,8 @@ function checkBuoyCollisions(){
   if (!lapActive || collidedThisLap) return;
   
   for (const b of buoys) {
-	const dx = b.x - pos.x;
-	const dy = b.y - pos.y;
+	const dx   = b.x - pos.x;
+	const dy   = b.y - pos.y;
 	const dist = Math.hypot(dx, dy);
 	if (dist < 12) {
 	  penaltySeconds += 10;
@@ -472,8 +481,8 @@ function update(dt){
   
   windAudio.volume = speed / maxSpeed;
   
-  document.getElementById('speedDisplay').innerText = `Speed: ${speedKmh.toFixed(1)} km/h`;
-  document.getElementById('bankAngleDisplay').innerText = `Bank: ${bankAngleDeg.toFixed(0)}°`;
+  document.getElementById('speedDisplay').innerText    = `Speed: ${speedKmh.toFixed(1)} km/h`;
+  document.getElementById('bankAngleDisplay').innerText= `Bank: ${bankAngleDeg.toFixed(0)}°`;
   
   if (!wrapped) {
 	checkLapCrossing();
@@ -500,15 +509,19 @@ function update(dt){
 	
 	const totalSec = rawSec + penaltySeconds;
 	if (penaltySeconds > 0 && collidedThisLap) {
-	  document.getElementById('lapTimeDisplay').innerText = `Laptime: ${totalSec.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
+	  document.getElementById('lapTimeDisplay').innerText =
+		`Laptime: ${totalSec.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
 	} else {
-	  document.getElementById('lapTimeDisplay').innerText = `Laptime: ${totalSec.toFixed(2)}`;
+	  document.getElementById('lapTimeDisplay').innerText =
+		`Laptime: ${totalSec.toFixed(2)}`;
 	}
   } else {
 	if (penaltySeconds > 0) {
-	  document.getElementById('lapTimeDisplay').innerText = `Laptime: ${currentLapTime.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
+	  document.getElementById('lapTimeDisplay').innerText =
+		`Laptime: ${currentLapTime.toFixed(2)} (- ${penaltySeconds}s penalty!)`;
 	} else {
-	  document.getElementById('lapTimeDisplay').innerText = `Laptime: ${currentLapTime.toFixed(2)}`;
+	  document.getElementById('lapTimeDisplay').innerText =
+		`Laptime: ${currentLapTime.toFixed(2)}`;
 	}
   }
 }
@@ -518,7 +531,10 @@ let wakeTrail = [];
 function totalTrailDistance(trail){
   let d = 0;
   for (let i = 1; i < trail.length; i++){
-	d += Math.hypot(trail[i].x - trail[i-1].x, trail[i].y - trail[i-1].y);
+	d += Math.hypot(
+	  trail[i].x - trail[i-1].x,
+	  trail[i].y - trail[i-1].y
+	);
   }
   return d;
 }
@@ -540,7 +556,7 @@ function drawWake(){
 function drawTrack(){
   buoys.forEach(b => {
 	ctx.beginPath();
-	ctx.arc(b.x, b.y, 8, 0, 2 * Math.PI);
+	ctx.arc(b.x, b.y, 8, 0, 2*Math.PI);
 	ctx.fillStyle = '#FFFF00';
 	ctx.fill();
 	ctx.lineWidth = 2;
@@ -557,23 +573,29 @@ function drawTrack(){
 
 function drawTelemetry(){
   ctx.save();
-  ctx.font = '14px monospace';
+  ctx.font      = '14px monospace';
   ctx.fillStyle = '#fff';
   let x = 20, y = 50;
   ctx.fillText('Telemetry:', x, y);
   y += 20;
   laps.forEach((lap, idx) => {
-	ctx.fillText(`Lap ${idx+1}:`, x, y); y += 18;
-	ctx.fillText(`  Time:   ${lap.finalTime.toFixed(2)} s`, x, y); y += 18;
-	ctx.fillText(`  Dist:   ${lap.distance.toFixed(1)} m`, x, y); y += 18;
-	ctx.fillText(`  TopSpd: ${lap.topSpeed.toFixed(1)} km/h`, x, y); y += 18;
-	ctx.fillText(`  MinSpd: ${lap.minSpeed.toFixed(1)} km/h`, x, y); y += 18;
-	ctx.fillText(`  AvgSpd: ${lap.avgSpeed.toFixed(1)} km/h`, x, y); y += 24;
+	ctx.fillText(`Lap ${idx+1}:`, x, y);
+	y += 18;
+	ctx.fillText(`  Time:   ${lap.finalTime.toFixed(2)} s`, x, y);
+	y += 18;
+	ctx.fillText(`  Dist:   ${lap.distance.toFixed(1)} m`, x, y);
+	y += 18;
+	ctx.fillText(`  TopSpd: ${lap.topSpeed.toFixed(1)} km/h`, x, y);
+	y += 18;
+	ctx.fillText(`  MinSpd: ${lap.minSpeed.toFixed(1)} km/h`, x, y);
+	y += 18;
+	ctx.fillText(`  AvgSpd: ${lap.avgSpeed.toFixed(1)} km/h`, x, y);
+	y += 24;
   });
   ctx.restore();
 }
 
-function drawRacer(){
+function drawRacer() {
   ctx.save();
   ctx.translate(pos.x, pos.y);
   ctx.rotate(heading - Math.PI / 2);
@@ -597,11 +619,11 @@ function drawGhostFrame(){
 }
 
 // --- Ideal Line Toggle ---
-let showIdealLine  = false;
-let idealLineData  = null;
+let showIdealLine = false;
+let idealLineData = null;
 
 async function loadIdealLineForCurrentTrack() {
-  // example: track name "Dubai Track" => "Dubai%20Track_ideal.json"
+  // If track name is "Dubai Track", we fetch "Dubai%20Track_ideal.json"
   const safeName = encodeURIComponent(currentTrack.name) + '_ideal.json';
   try {
 	const response = await fetch(safeName);
@@ -621,13 +643,13 @@ function drawIdealLine() {
   if (!showIdealLine) return;
   if (!idealLineData || !idealLineData.frames) return;
 
-  // If the ideal line is for a different track, we could skip or warn:
+  // If the line is for a different trackKey, skip or warn:
   if (idealLineData.trackKey && idealLineData.trackKey !== currentTrackKey) {
 	return;
   }
 
   ctx.save();
-  ctx.strokeStyle = 'rgba(0, 0, 255, 0.25)';
+  ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
   ctx.lineWidth   = 3;
   ctx.beginPath();
 
@@ -666,11 +688,11 @@ function gameLoop(timestamp){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = '#222';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-  // If you have a background map, draw it here:
+
+  // Optionally draw a background map here
   // drawBackgroundMap();
 
-  drawIdealLine(); 
+  drawIdealLine();   // Draw the recommended path if toggled on
   drawTrack();
   drawWake();
   drawGhostFrame();
@@ -694,7 +716,7 @@ exportGhostBtn.addEventListener('click', () => {
   const blob = new Blob([jsonData], { type: 'application/json' });
   const url  = URL.createObjectURL(blob);
   const link = document.createElement('a');
-  link.href = url;
+  link.href  = url;
   link.download = 'lapData.json';
   document.body.appendChild(link);
   link.click();
@@ -706,7 +728,7 @@ importGhostFile.addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
   try {
-	const text = await file.text();
+	const text     = await file.text();
 	const imported = JSON.parse(text);
 
 	if (!imported.frames || !Array.isArray(imported.frames)) {
@@ -716,6 +738,12 @@ importGhostFile.addEventListener('change', async (e) => {
 	if (imported.trackKey && trackConfigs[imported.trackKey]) {
 	  currentTrackKey = imported.trackKey;
 	  currentTrack    = trackConfigs[currentTrackKey];
+	  
+	  // Sync radio buttons
+	  trackRadios.forEach(radio => {
+		radio.checked = (radio.value === currentTrackKey);
+	  });
+
 	  computeBuoys();
 	} else if (imported.trackKey) {
 	  alert(`Warning: The ghost uses trackKey "${imported.trackKey}" which doesn't exist here!`);
@@ -734,7 +762,7 @@ clearGhostBtn.addEventListener('click', () => {
 });
 
 // --- Initialization ---
-resizeCanvas();  
+resizeCanvas();
 pos.x = canvas.width / 2;
 pos.y = canvas.height / 2;
 requestAnimationFrame(gameLoop);
